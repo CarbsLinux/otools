@@ -1,0 +1,13 @@
+--- a/usr.bin/doas/doas.c	2020-10-16 13:11:26.769202572 +0300
++++ b/usr.bin/doas/doas.c	2020-10-16 13:09:43.558056917 +0300
+@@ -15,6 +15,10 @@
+  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
+ 
++#ifndef _GNU_SOURCE
++#define _GNU_SOURCE
++#endif
++
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <sys/ioctl.h>

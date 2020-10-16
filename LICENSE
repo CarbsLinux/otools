@@ -1,0 +1,6 @@
+bin/ include/ lib/ sys/ usr.bin/ come from OpenBSD with the modifications from
+                                 patches folder.
+includedir/ patches/00[01-37]-*  come from OasisLinux
+includedir/sys/compat.h          taken from https://github.com/aperezdc/signify
+
+The Makefile, config.mk and other patches are on the public domain.

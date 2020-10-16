@@ -1,0 +1,11 @@
+--- a/lib/libc/hash/sha2.c	2019-07-23 15:35:22.000000000 +0300
++++ b/lib/libc/hash/sha2.c	2020-10-15 16:36:04.849056534 +0300
+@@ -35,6 +35,8 @@
+  */
+ 
+ #include <sys/types.h>
++#include <sys/cdefs.h>
++#include <sys/compat.h>
+ 
+ #include <string.h>
+ #include <sha2.h>

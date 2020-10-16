@@ -1,0 +1,10 @@
+--- a/lib/libutil/bcrypt_pbkdf.c	2019-11-21 19:13:39.000000000 +0300
++++ b/lib/libutil/bcrypt_pbkdf.c	2020-10-15 17:25:45.569164914 +0300
+@@ -16,6 +16,7 @@
+  */
+ 
+ #include <sys/types.h>
++#include <sys/cdefs.h>
+ 
+ #include <stdint.h>
+ #include <stdlib.h>

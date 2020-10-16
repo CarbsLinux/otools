@@ -1,0 +1,19 @@
+--- openbsd-nopatch/bin/md5/md5.c	2019-05-18 19:53:39.000000000 +0300
++++ src/bin/md5/md5.c	2020-10-16 16:05:40.294296211 +0300
+@@ -21,6 +21,7 @@
+  * Materiel Command, USAF, under agreement number F39502-99-1-0512.
+  */
+ 
++#include <sys/cdefs.h>
+ #include <sys/types.h>
+ #include <sys/time.h>
+ #include <sys/queue.h>
+@@ -42,7 +43,7 @@
+ #include <rmd160.h>
+ #include <sha1.h>
+ #include <sha2.h>
+-#include <crc.h>
++#include "crc.h"
+ 
+ #define STYLE_MD5	0
+ #define STYLE_CKSUM	1

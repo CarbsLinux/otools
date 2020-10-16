@@ -1,0 +1,40 @@
+--- a/lib/libc/hash/helper.c	2019-06-28 16:32:41.000000000 +0300
++++ b/lib/libc/hash/helper.c	2020-10-15 17:19:18.086197995 +0300
+@@ -22,6 +22,7 @@
+  */
+ 
+ #include <sys/types.h>
++#include <sys/cdefs.h>
+ #include <sys/stat.h>
+ 
+ #include <errno.h>
+--- a/lib/libc/hash/md5.c	2015-09-11 12:18:27.000000000 +0300
++++ b/lib/libc/hash/md5.c	2020-10-16 16:15:28.878466917 +0300
+@@ -17,6 +17,7 @@
+  * will fill a supplied 16-byte array with the digest.
+  */
+ 
++#include <sys/cdefs.h>
+ #include <sys/types.h>
+ #include <string.h>
+ #include <md5.h>
+--- a/lib/libc/hash/rmd160.c	2015-09-11 12:18:27.000000000 +0300
++++ b/lib/libc/hash/rmd160.c	2020-10-16 16:16:34.873811145 +0300
+@@ -26,6 +26,7 @@
+  * RSA Laboratories, CryptoBytes, Volume 3, Number 2, Autumn 1997,
+  * ftp://ftp.rsasecurity.com/pub/cryptobytes/crypto3n2.pdf
+  */
++#include <sys/cdefs.h>
+ #include <sys/types.h>
+ #include <endian.h>
+ #include <string.h>
+--- a/lib/libc/hash/sha1.c	2019-06-08 01:56:36.000000000 +0300
++++ b/lib/libc/hash/sha1.c	2020-10-16 16:12:06.772977604 +0300
+@@ -14,6 +14,7 @@
+  *   34AA973C D4C4DAA4 F61EEB2B DBAD2731 6534016F
+  */
+ 
++#include <sys/cdefs.h>
+ #include <sys/types.h>
+ #include <string.h>
+ #include <sha1.h>

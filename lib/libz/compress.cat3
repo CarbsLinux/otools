@@ -1,0 +1,1556 @@
+COMPRESS(3)              BSD Library Functions Manual              COMPRESS(3)
+
+[1mNAME[0m
+     [1mcompress[22m, [1mzlibVersion[22m, [1mdeflateInit[22m, [1mdeflate[22m, [1mdeflateEnd[22m, [1minflateInit[22m,
+     [1minflate[22m, [1minflateEnd[22m, [1mdeflateInit2[22m, [1mdeflateSetDictionary[22m, [1mdeflateCopy[22m,
+     [1mdeflateReset[22m, [1mdeflateParams[22m, [1mdeflateTune[22m, [1mdeflateBound[22m, [1mdeflatePrime[22m,
+     [1mdeflateSetHeader[22m, [1minflateInit2[22m, [1minflateSetDictionary[22m, [1minflateSync[22m,
+     [1minflateCopy[22m, [1minflateReset[22m, [1minflatePrime[22m, [1minflateGetHeader[22m,
+     [1minflateBackInit[22m, [1minflateBack[22m, [1minflateBackEnd[22m, [1mzlibCompileFlags[22m,
+     [1mcompress2[22m, [1mcompressBound[22m, [1muncompress[22m, [1mgzopen[22m, [1mgzdopen[22m, [1mgzsetparams[22m,
+     [1mgzread[22m, [1mgzwrite[22m, [1mgzprintf[22m, [1mgzputs[22m, [1mgzgets[22m, [1mgzputc[22m, [1mgzgetc[22m, [1mgzungetc[22m,
+     [1mgzflush[22m, [1mgzseek[22m, [1mgzrewind[22m, [1mgztell[22m, [1mgzeof[22m, [1mgzdirect[22m, [1mgzclose[22m, [1mgzerror[22m,
+     [1mgzclearerr[22m, [1madler32[22m, [1madler32_combine[22m, [1mcrc32[22m, [1mcrc32_combine [22m-- zlib gen-
+     eral purpose compression library
+
+[1mSYNOPSIS[0m
+     [1m#include <zlib.h>[0m
+
+     Basic functions
+
+     [4mconst[24m [4mchar[24m [4m*[0m
+     [1mzlibVersion[22m([4mvoid[24m);
+
+     [4mint[0m
+     [1mdeflateInit[22m([4mz_streamp[24m [4mstrm[24m, [4mint[24m [4mlevel[24m);
+
+     [4mint[0m
+     [1mdeflate[22m([4mz_streamp[24m [4mstrm[24m, [4mint[24m [4mflush[24m);
+
+     [4mint[0m
+     [1mdeflateEnd[22m([4mz_streamp[24m [4mstrm[24m);
+
+     [4mint[0m
+     [1minflateInit[22m([4mz_streamp[24m [4mstrm[24m);
+
+     [4mint[0m
+     [1minflate[22m([4mz_streamp[24m [4mstrm[24m, [4mint[24m [4mflush[24m);
+
+     [4mint[0m
+     [1minflateEnd[22m([4mz_streamp[24m [4mstrm[24m);
+
+     Advanced functions
+
+     [4mint[0m
+     [1mdeflateInit2[22m([4mz_streamp[24m [4mstrm[24m, [4mint[24m [4mlevel[24m, [4mint[24m [4mmethod[24m, [4mint[24m [4mwindowBits[24m,
+         [4mint[24m [4mmemLevel[24m, [4mint[24m [4mstrategy[24m);
+
+     [4mint[0m
+     [1mdeflateSetDictionary[22m([4mz_streamp[24m [4mstrm[24m, [4mconst[24m [4mBytef[24m [4m*dictionary[24m,
+         [4muInt[24m [4mdictLength[24m);
+
+     [4mint[0m
+     [1mdeflateCopy[22m([4mz_streamp[24m [4mdest[24m, [4mz_streamp[24m [4msource[24m);
+
+     [4mint[0m
+     [1mdeflateReset[22m([4mz_streamp[24m [4mstrm[24m);
+
+     [4mint[0m
+     [1mdeflateParams[22m([4mz_streamp[24m [4mstrm[24m, [4mint[24m [4mlevel[24m, [4mint[24m [4mstrategy[24m);
+
+     [4mint[0m
+     [1mdeflateTune[22m([4mz_streamp[24m [4mstrm[24m, [4mint[24m [4mgood_length[24m, [4mint[24m [4mmax_lazy[24m,
+         [4mint[24m [4mnice_length[24m, [4mint[24m [4mmax_chain[24m);
+
+     [4muLong[0m
+     [1mdeflateBound[22m([4mz_streamp[24m [4mstrm[24m, [4muLong[24m [4msourceLen[24m);
+
+     [4mint[0m
+     [1mdeflatePrime[22m([4mz_streamp[24m [4mstrm[24m, [4mint[24m [4mbits[24m, [4mint[24m [4mvalue[24m);
+
+     [4mint[0m
+     [1mdeflateSetHeader[22m([4mz_streamp[24m [4mstrm[24m, [4mgz_headerp[24m [4mhead[24m);
+
+     [4mint[0m
+     [1minflateInit2[22m([4mz_streamp[24m [4mstrm[24m, [4mint[24m [4mwindowBits[24m);
+
+     [4mint[0m
+     [1minflateSetDictionary[22m([4mz_streamp[24m [4mstrm[24m, [4mconst[24m [4mBytef[24m [4m*dictionary[24m,
+         [4muInt[24m [4mdictLength[24m);
+
+     [4mint[0m
+     [1minflateSync[22m([4mz_streamp[24m [4mstrm[24m);
+
+     [4mint[0m
+     [1minflateCopy[22m([4mz_streamp[24m [4mdst[24m, [4mz_streamp[24m [4msource[24m);
+
+     [4mint[0m
+     [1minflateReset[22m([4mz_streamp[24m [4mstrm[24m);
+
+     [4mint[0m
+     [1minflatePrime[22m([4mz_streamp[24m [4mstrm[24m, [4mint[24m [4mbits[24m, [4mint[24m [4mvalue[24m);
+
+     [4mint[0m
+     [1minflateGetHeader[22m([4mz_streamp[24m [4mstrm[24m, [4mgz_headerp[24m [4mhead[24m);
+
+     [4mint[0m
+     [1minflateBackInit[22m([4mz_stream[24m [4m*strm[24m, [4mint[24m [4mwindowBits[24m,
+         [4munsigned[24m [4mchar[24m [4mFAR[24m [4m*window[24m);
+
+     [4mint[0m
+     [1minflateBack[22m([4mz_stream[24m [4m*strm[24m, [4min_func[24m [4min[24m, [4mvoid[24m [4mFAR[24m [4m*in_desc[24m, [4mout_func[24m [4mout[24m,
+         [4mvoid[24m [4mFAR[24m [4m*out_desc[24m);
+
+     [4mint[0m
+     [1minflateBackEnd[22m([4mz_stream[24m [4m*strm[24m);
+
+     [4muLong[0m
+     [1mzlibCompileFlags[22m([4mvoid[24m);
+
+     Utility functions
+
+     [1mtypedef voidp gzFile;[0m
+
+     [4mint[0m
+     [1mcompress[22m([4mBytef[24m [4m*dest[24m, [4muLongf[24m [4m*destLen[24m, [4mconst[24m [4mBytef[24m [4m*source[24m,
+         [4muLong[24m [4msourceLen[24m);
+
+     [4mint[0m
+     [1mcompress2[22m([4mBytef[24m [4m*dest[24m, [4muLongf[24m [4m*destLen[24m, [4mconst[24m [4mBytef[24m [4m*source[24m,
+         [4muLong[24m [4msourceLen[24m, [4mint[24m [4mlevel[24m);
+
+     [4muLong[0m
+     [1mcompressBound[22m([4muLong[24m [4msourceLen[24m);
+
+     [4mint[0m
+     [1muncompress[22m([4mBytef[24m [4m*dest[24m, [4muLongf[24m [4m*destLen[24m, [4mconst[24m [4mBytef[24m [4m*source[24m,
+         [4muLong[24m [4msourceLen[24m);
+
+     [4mgzFile[0m
+     [1mgzopen[22m([4mconst[24m [4mchar[24m [4m*path[24m, [4mconst[24m [4mchar[24m [4m*mode[24m);
+
+     [4mgzFile[0m
+     [1mgzdopen[22m([4mint[24m [4mfd[24m, [4mconst[24m [4mchar[24m [4m*mode[24m);
+
+     [4mint[0m
+     [1mgzsetparams[22m([4mgzFile[24m [4mfile[24m, [4mint[24m [4mlevel[24m, [4mint[24m [4mstrategy[24m);
+
+     [4mint[0m
+     [1mgzread[22m([4mgzFile[24m [4mfile[24m, [4mvoidp[24m [4mbuf[24m, [4munsigned[24m [4mlen[24m);
+
+     [4mint[0m
+     [1mgzwrite[22m([4mgzFile[24m [4mfile[24m, [4mvoidpc[24m [4mbuf[24m, [4munsigned[24m [4mlen[24m);
+
+     [4mint[0m
+     [1mgzprintf[22m([4mgzFile[24m [4mfile[24m, [4mconst[24m [4mchar[24m [4m*format[24m, [4m...[24m);
+
+     [4mint[0m
+     [1mgzputs[22m([4mgzFile[24m [4mfile[24m, [4mconst[24m [4mchar[24m [4m*s[24m);
+
+     [4mchar[24m [4m*[0m
+     [1mgzgets[22m([4mgzFile[24m [4mfile[24m, [4mchar[24m [4m*buf[24m, [4mint[24m [4mlen[24m);
+
+     [4mint[0m
+     [1mgzputc[22m([4mgzFile[24m [4mfile[24m, [4mint[24m [4mc[24m);
+
+     [4mint[0m
+     [1mgzgetc[22m([4mgzFile[24m [4mfile[24m);
+
+     [4mint[0m
+     [1mgzungetc[22m([4mint[24m [4mc[24m, [4mgzFile[24m [4mfile[24m);
+
+     [4mint[0m
+     [1mgzflush[22m([4mgzFile[24m [4mfile[24m, [4mint[24m [4mflush[24m);
+
+     [4mz_off_t[0m
+     [1mgzseek[22m([4mgzFile[24m [4mfile[24m, [4mz_off_t[24m [4moffset[24m, [4mint[24m [4mwhence[24m);
+
+     [4mint[0m
+     [1mgzrewind[22m([4mgzFile[24m [4mfile[24m);
+
+     [4mz_off_t[0m
+     [1mgztell[22m([4mgzFile[24m [4mfile[24m);
+
+     [4mint[0m
+     [1mgzeof[22m([4mgzFile[24m [4mfile[24m);
+
+     [4mint[0m
+     [1mgzdirect[22m([4mgzFile[24m [4mfile[24m);
+
+     [4mint[0m
+     [1mgzclose[22m([4mgzFile[24m [4mfile[24m);
+
+     [4mconst[24m [4mchar[24m [4m*[0m
+     [1mgzerror[22m([4mgzFile[24m [4mfile[24m, [4mint[24m [4m*errnum[24m);
+
+     [4mvoid[0m
+     [1mgzclearerr[22m([4mgzFile[24m [4mfile[24m);
+
+     Checksum functions
+
+     [4muLong[0m
+     [1madler32[22m([4muLong[24m [4madler[24m, [4mconst[24m [4mBytef[24m [4m*buf[24m, [4muInt[24m [4mlen[24m);
+
+     [4muLong[0m
+     [1madler32_combine[22m([4muLong[24m [4madler1[24m, [4muLong[24m [4madler2[24m, [4mz_off_t[24m [4mlen2[24m);
+
+     [4muLong[0m
+     [1mcrc32[22m([4muLong[24m [4mcrc[24m, [4mconst[24m [4mBytef[24m [4m*buf[24m, [4muInt[24m [4mlen[24m);
+
+     [4muLong[0m
+     [1mcrc32_combine[22m([4muLong[24m [4mcrc1[24m, [4muLong[24m [4mcrc2[24m, [4mz_off_t[24m [4mlen2[24m);
+
+[1mDESCRIPTION[0m
+     This manual page describes the [1mzlib [22mgeneral purpose compression library,
+     version 1.2.3.
+
+     The [1mzlib [22mcompression library provides in-memory compression and decom-
+     pression functions, including integrity checks of the uncompressed data.
+     This version of the library supports only one compression method
+     (deflation) but other algorithms will be added later and will have the
+     same stream interface.
+
+     Compression can be done in a single step if the buffers are large enough
+     (for example if an input file is mmap'ed), or can be done by repeated
+     calls of the compression function.  In the latter case, the application
+     must provide more input and/or consume the output (providing more output
+     space) before each call.
+
+     The compressed data format used by default by the in-memory functions is
+     the [1mzlib [22mformat, which is a zlib wrapper documented in RFC 1950, wrapped
+     around a deflate stream, which is itself documented in RFC 1951.
+
+     The library also supports reading and writing files in gzip(1) (.gz) for-
+     mat with an interface similar to that of stdio(3) using the functions
+     that start with "gz".  The gzip format is different from the zlib format.
+     gzip is a gzip wrapper, documented in RFC 1952, wrapped around a deflate
+     stream.  This library can optionally read and write gzip streams in mem-
+     ory as well.
+
+     The zlib format was designed to be compact and fast for use in memory and
+     on communications channels.  The gzip format was designed for single-file
+     compression on file systems, has a larger header than zlib to maintain
+     directory information, and uses a different, slower, check method than
+     zlib.
+
+     The library does not install any signal handler.  The decoder checks the
+     consistency of the compressed data, so the library should never crash
+     even in case of corrupted input.
+
+     The functions within the library are divided into the following sections:
+
+           [1m-   [22mBasic functions
+           [1m-   [22mAdvanced functions
+           [1m-   [22mUtility functions
+           [1m-   [22mChecksum functions
+
+[1mBASIC FUNCTIONS[0m
+     [4mconst[24m [4mchar[24m [4m*[24m [1mzlibVersion[22m([4mvoid[24m);
+
+             The application can compare [1mzlibVersion[22m() and ZLIB_VERSION for
+             consistency.  If the first character differs, the library code
+             actually used is not compatible with the <[4mzlib.h[24m> header file
+             used by the application.  This check is automatically made by
+             [1mdeflateInit[22m() and [1minflateInit[22m().
+
+     [4mint[24m [1mdeflateInit[22m([4mz_streamp[24m [4mstrm[24m, [4mint[24m [4mlevel[24m);
+
+             The [1mdeflateInit[22m() function initializes the internal stream state
+             for compression.  The fields [4mzalloc[24m, [4mzfree[24m, and [4mopaque[24m must be
+             initialized before by the caller.  If [4mzalloc[24m and [4mzfree[24m are set to
+             Z_NULL, [1mdeflateInit[22m() updates them to use default allocation
+             functions.
+
+             The compression level must be Z_DEFAULT_COMPRESSION, or between 0
+             and 9: 1 gives best speed, 9 gives best compression, 0 gives no
+             compression at all (the input data is simply copied a block at a
+             time).
+
+             Z_DEFAULT_COMPRESSION requests a default compromise between speed
+             and compression (currently equivalent to level 6).
+
+             [1mdeflateInit[22m() returns Z_OK if successful, Z_MEM_ERROR if there
+             was not enough memory, Z_STREAM_ERROR if level is not a valid
+             compression level, Z_VERSION_ERROR if the [1mzlib [22mlibrary version
+             (zlib_version) is incompatible with the version assumed by the
+             caller (ZLIB_VERSION).  [4mmsg[24m is set to null if there is no error
+             message.  [1mdeflateInit[22m() does not perform any compression: this
+             will be done by [1mdeflate[22m().
+
+     [4mint[24m [1mdeflate[22m([4mz_streamp[24m [4mstrm[24m, [4mint[24m [4mflush[24m);
+
+             [1mdeflate[22m() compresses as much data as possible, and stops when the
+             input buffer becomes empty or the output buffer becomes full.  It
+             may introduce some output latency (reading input without
+             producing any output) except when forced to flush.
+
+             The detailed semantics are as follows.  [1mdeflate[22m() performs one or
+             both of the following actions:
+
+             Compress more input starting at [4mnext_in[24m and update [4mnext_in[24m and
+             [4mavail_in[24m accordingly.  If not all input can be processed (because
+             there is not enough room in the output buffer), [4mnext_in[24m and
+             [4mavail_in[24m are updated and processing will resume at this point for
+             the next call to [1mdeflate[22m().
+
+             Provide more output starting at [4mnext_out[24m and update [4mnext_out[24m and
+             [4mavail_out[24m accordingly.  This action is forced if the parameter
+             [4mflush[24m is non-zero.  Forcing [4mflush[24m frequently degrades the com-
+             pression ratio, so this parameter should be set only when neces-
+             sary (in interactive applications).  Some output may be provided
+             even if [4mflush[24m is not set.
+
+             Before the call to [1mdeflate[22m(), the application should ensure that
+             at least one of the actions is possible, by providing more input
+             and/or consuming more output, and updating [4mavail_in[24m or [4mavail_out[0m
+             accordingly; [4mavail_out[24m should never be zero before the call.  The
+             application can consume the compressed output when it wants, for
+             example when the output buffer is full (avail_out == 0), or after
+             each call to [1mdeflate[22m().  If [1mdeflate[22m() returns Z_OK and with zero
+             [4mavail_out[24m, it must be called again after making room in the out-
+             put buffer because there might be more output pending.
+
+             Normally the parameter [4mflush[24m is set to Z_NO_FLUSH, which allows
+             [1mdeflate[22m() to decide how much data to accumulate before producing
+             output, in order to maximise compression.
+
+             If the parameter [4mflush[24m is set to Z_SYNC_FLUSH, all pending output
+             is flushed to the output buffer and the output is aligned on a
+             byte boundary, so that the decompressor can get all input data
+             available so far.  (In particular, [4mavail_in[24m is zero after the
+             call if enough output space has been provided before the call.)
+             Flushing may degrade compression for some compression algorithms
+             and so it should be used only when necessary.
+
+             If [4mflush[24m is set to Z_FULL_FLUSH, all output is flushed as with
+             Z_SYNC_FLUSH, and the compression state is reset so that decom-
+             pression can restart from this point if previous compressed data
+             has been damaged or if random access is desired.  Using
+             Z_FULL_FLUSH too often can seriously degrade compression.
+
+             If [1mdeflate[22m() returns with avail_out == 0, this function must be
+             called again with the same value of the flush parameter and more
+             output space (updated [4mavail_out[24m), until the flush is complete
+             ([1mdeflate[22m() returns with non-zero [4mavail_out[24m).  In the case of a
+             Z_FULL_FLUSH or a Z_SYNC_FLUSH, make sure that [4mavail_out[24m is
+             greater than six to avoid repeated flush markers due to avail_out
+             == 0 on return.
+
+             If the parameter [4mflush[24m is set to Z_FINISH, pending input is pro-
+             cessed, pending output is flushed and [1mdeflate[22m() returns with
+             Z_STREAM_END if there was enough output space; if [1mdeflate[22m() re-
+             turns with Z_OK, this function must be called again with Z_FINISH
+             and more output space (updated [4mavail_out[24m but no more input data,
+             until it returns with Z_STREAM_END or an error.  After [1mdeflate[22m()
+             has returned Z_STREAM_END, the only possible operations on the
+             stream are [1mdeflateReset[22m() or [1mdeflateEnd[22m().
+
+             Z_FINISH can be used immediately after [1mdeflateInit[22m() if all the
+             compression is to be done in a single step.  In this case,
+             [4mavail_out[24m must be at least the value returned by [1mdeflateBound[22m()
+             (see below).  If [1mdeflate[22m() does not return Z_STREAM_END, then it
+             must be called again as described above.
+
+             [1mdeflate[22m() sets strm->adler to the Adler-32 checksum of all input
+             read so far (that is, [4mtotal_in[24m bytes).
+
+             [1mdeflate[22m() may update strm->data_type if it can make a good guess
+             about the input data type (Z_BINARY or Z_TEXT).  If in doubt, the
+             data is considered binary.  This field is only for information
+             purposes and does not affect the compression algorithm in any
+             manner.
+
+             [1mdeflate[22m() returns Z_OK if some progress has been made (more input
+             processed or more output produced), Z_STREAM_END if all input has
+             been consumed and all output has been produced (only when [4mflush[0m
+             is set to Z_FINISH), Z_STREAM_ERROR if the stream state was in-
+             consistent (for example, if [4mnext_in[24m or [4mnext_out[24m was NULL),
+             Z_BUF_ERROR if no progress is possible (for example, [4mavail_in[24m or
+             [4mavail_out[24m was zero).  Note that Z_BUF_ERROR is not fatal, and
+             [1mdeflate[22m() can be called again with more input and more output
+             space to continue processing.
+
+     [4mint[24m [1mdeflateEnd[22m([4mz_streamp[24m [4mstrm[24m);
+
+             All dynamically allocated data structures for this stream are
+             freed.  This function discards any unprocessed input and does not
+             flush any pending output.
+
+             [1mdeflateEnd[22m() returns Z_OK if successful, Z_STREAM_ERROR if the
+             stream state was inconsistent, Z_DATA_ERROR if the stream was
+             freed prematurely (some input or output was discarded).  In the
+             error case, [4mmsg[24m may be set but then points to a static string
+             (which must not be deallocated).
+
+     [4mint[24m [1minflateInit[22m([4mz_streamp[24m [4mstrm[24m);
+             The [1minflateInit[22m() function initializes the internal stream state
+             for decompression.  The fields [4mnext_in[24m, [4mavail_in[24m, [4mzalloc[24m, [4mzfree[24m,
+             and [4mopaque[24m must be initialized before by the caller.  If [4mnext_in[0m
+             is not Z_NULL and [4mavail_in[24m is large enough (the exact value
+             depends on the compression method), [1minflateInit[22m() determines the
+             compression method from the [1mzlib [22mheader and allocates all data
+             structures accordingly; otherwise the allocation will be deferred
+             to the first call to [1minflate[22m().  If [4mzalloc[24m and [4mzfree[24m are set to
+             Z_NULL, [1minflateInit[22m() updates them to use default allocation
+             functions.
+
+             [1minflateInit[22m() returns Z_OK if successful, Z_MEM_ERROR if there
+             was not enough memory, Z_VERSION_ERROR if the [1mzlib [22mlibrary ver-
+             sion is incompatible with the version assumed by the caller.  [4mmsg[0m
+             is set to null if there is no error message.  [1minflateInit[22m() does
+             not perform any decompression apart from reading the [1mzlib [22mheader
+             if present: this will be done by [1minflate[22m().  (So [4mnext_in[24m and
+             [4mavail_in[24m may be modified, but [4mnext_out[24m and [4mavail_out[24m are un-
+             changed.)
+
+     [4mint[24m [1minflate[22m([4mz_streamp[24m [4mstrm[24m, [4mint[24m [4mflush[24m);
+             [1minflate[22m() decompresses as much data as possible, and stops when
+             the input buffer becomes empty or the output buffer becomes full.
+             It may introduce some output latency (reading input without
+             producing any output) except when forced to flush.
+
+             The detailed semantics are as follows.  [1minflate[22m() performs one or
+             both of the following actions:
+
+             Decompress more input starting at [4mnext_in[24m and update [4mnext_in[24m and
+             [4mavail_in[24m accordingly.  If not all input can be processed (because
+             there is not enough room in the output buffer), [4mnext_in[24m is up-
+             dated and processing will resume at this point for the next call
+             to [1minflate[22m().
+
+             Provide more output starting at [4mnext_out[24m and update [4mnext_out[24m and
+             [4mavail_out[24m accordingly.  [1minflate[22m() provides as much output as pos-
+             sible, until there is no more input data or no more space in the
+             output buffer (see below about the flush parameter).
+
+             Before the call to [1minflate[22m(), the application should ensure that
+             at least one of the actions is possible, by providing more input
+             and/or consuming more output, and updating the next_* and avail_*
+             values accordingly.  The application can consume the uncompressed
+             output when it wants, for example when the output buffer is full
+             (avail_out == 0), or after each call to [1minflate[22m().  If [1minflate[22m()
+             returns Z_OK and with zero [4mavail_out[24m, it must be called again af-
+             ter making room in the output buffer because there might be more
+             output pending.
+
+             The [4mflush[24m parameter of [1minflate[22m() can be Z_NO_FLUSH, Z_SYNC_FLUSH,
+             Z_FINISH, or Z_BLOCK.  Z_SYNC_FLUSH requests that [1minflate[22m() flush
+             as much output as possible to the output buffer.  Z_BLOCK re-
+             quests that [1minflate[22m() stop if and when it gets to the next de-
+             flate block boundary.  When decoding the zlib or gzip format,
+             this will cause [1minflate[22m() to return immediately after the header
+             and before the first block.  When doing a raw inflate, [1minflate[22m()
+             will go ahead and process the first block, and will return when
+             it gets to the end of that block, or when it runs out of data.
+
+             The Z_BLOCK option assists in appending to or combining deflate
+             streams.  Also to assist in this, on return [1minflate[22m() will set
+             strm->data_type to the number of unused bits in the last byte
+             taken from strm->next_in, plus 64 if [1minflate[22m() is currently de-
+             coding the last block in the deflate stream, plus 128 if
+             [1minflate[22m() returned immediately after decoding an end-of-block
+             code or decoding the complete header up to just before the first
+             byte of the deflate stream.  The end-of-block will not be indi-
+             cated until all of the uncompressed data from that block has been
+             written to strm->next_out.  The number of unused bits may in gen-
+             eral be greater than seven, except when bit 7 of data_type is
+             set, in which case the number of unused bits will be less than
+             eight.
+
+             [1minflate[22m() should normally be called until it returns Z_STREAM_END
+             or an error.  However if all decompression is to be performed in
+             a single step (a single call to inflate), the parameter [4mflush[0m
+             should be set to Z_FINISH.  In this case all pending input is
+             processed and all pending output is flushed; [4mavail_out[24m must be
+             large enough to hold all the uncompressed data.  (The size of the
+             uncompressed data may have been saved by the compressor for this
+             purpose.)  The next operation on this stream must be [1minflateEnd[22m()
+             to deallocate the decompression state.  The use of Z_FINISH is
+             never required, but can be used to inform [1minflate[22m() that a faster
+             approach may be used for the single [1minflate[22m() call.
+
+             In this implementation, [1minflate[22m() always flushes as much output
+             as possible to the output buffer, and always uses the faster ap-
+             proach on the first call.  So the only effect of the [4mflush[24m param-
+             eter in this implementation is on the return value of [1minflate[22m(),
+             as noted below, or when it returns early because Z_BLOCK is used.
+
+             If a preset dictionary is needed after this call (see
+             [1minflateSetDictionary[22m() below), [1minflate[22m() sets strm->adler to the
+             Adler-32 checksum of the dictionary chosen by the compressor and
+             returns Z_NEED_DICT; otherwise it sets strm->adler to the
+             Adler-32 checksum of all output produced so far (that is,
+             [4mtotal_out[24m bytes) and returns Z_OK, Z_STREAM_END or an error code
+             as described below.  At the end of the stream, [1minflate[22m() checks
+             that its computed Adler-32 checksum is equal to that saved by the
+             compressor and returns Z_STREAM_END only if the checksum is cor-
+             rect.
+
+             [1minflate[22m() will decompress and check either zlib-wrapped or gzip-
+             wrapped deflate data.  The header type is detected automatically.
+             Any information contained in the gzip header is not retained, so
+             applications that need that information should instead use raw
+             inflate; see [1minflateInit2[22m() below, or [1minflateBack[22m() and perform
+             their own processing of the gzip header and trailer.
+
+             [1minflate[22m() returns Z_OK if some progress has been made (more input
+             processed or more output produced), Z_STREAM_END if the end of
+             the compressed data has been reached and all uncompressed output
+             has been produced, Z_NEED_DICT if a preset dictionary is needed
+             at this point, Z_DATA_ERROR if the input data was corrupted (in-
+             put stream not conforming to the [1mzlib [22mformat or incorrect check
+             value), Z_STREAM_ERROR if the stream structure was inconsistent
+             (for example, if [4mnext_in[24m or [4mnext_out[24m was NULL), Z_MEM_ERROR if
+             there was not enough memory, Z_BUF_ERROR if no progress is possi-
+             ble or if there was not enough room in the output buffer when
+             Z_FINISH is used.  Note that Z_BUF_ERROR is not fatal, and
+             [1minflate[22m() can be called again with more input and more output
+             space to continue compressing.  If Z_DATA_ERROR is returned, the
+             application may then call [1minflateSync[22m() to look for a good com-
+             pression block if a partial recovery of the data is desired.
+
+     [4mint[24m [1minflateEnd[22m([4mz_streamp[24m [4mstrm[24m);
+             All dynamically allocated data structures for this stream are
+             freed.  This function discards any unprocessed input and does not
+             flush any pending output.
+
+             [1minflateEnd[22m() returns Z_OK if successful, or Z_STREAM_ERROR if the
+             stream state was inconsistent.  In the error case, [4mmsg[24m may be set
+             but then points to a static string (which must not be
+             deallocated).
+
+[1mADVANCED FUNCTIONS[0m
+     The following functions are needed only in some special applications.
+
+     [4mint[24m [1mdeflateInit2[22m([4mz_streamp[24m [4mstrm[24m, [4mint[24m [4mlevel[24m, [4mint[24m [4mmethod[24m, [4mint[24m [4mwindowBits[24m,
+             [4mint[24m [4mmemLevel[24m, [4mint[24m [4mstrategy[24m);
+
+             This is another version of [1mdeflateInit[22m() with more compression
+             options.  The fields [4mnext_in[24m, [4mzalloc[24m, [4mzfree[24m, and [4mopaque[24m must be
+             initialized before by the caller.
+
+             The [4mmethod[24m parameter is the compression method.  It must be
+             Z_DEFLATED in this version of the library.
+
+             The [4mwindowBits[24m parameter is the base two logarithm of the window
+             size (the size of the history buffer).  It should be in the range
+             8..15 for this version of the library.  Larger values of this pa-
+             rameter result in better compression at the expense of memory us-
+             age.  The default value is 15 if [1mdeflateInit[22m() is used instead.
+
+             [4mwindowBits[24m can also be -8..-15 for raw deflate.  In this case,
+             -windowBits determines the window size.  [1mdeflate[22m() will then gen-
+             erate raw deflate data with no zlib header or trailer, and will
+             not compute an Adler-32 check value.
+
+             [4mwindowBits[24m can also be greater than 15 for optional gzip encod-
+             ing.  Add 16 to [4mwindowBits[24m to write a simple gzip header and
+             trailer around the compressed data instead of a zlib wrapper.
+             The gzip header will have no file name, no extra data, no com-
+             ment, no modification time (set to zero), no header crc, and the
+             operating system will be set to 255 (unknown).  If a gzip stream
+             is being written, strm->adler is a crc32 instead of an adler32.
+
+             The [4mmemLevel[24m parameter specifies how much memory should be allo-
+             cated for the internal compression state.  memLevel=1 uses mini-
+             mum memory but is slow and reduces compression ratio; memLevel=9
+             uses maximum memory for optimal speed.  The default value is 8.
+             See <[4mzconf.h[24m> for total memory usage as a function of [4mwindowBits[0m
+             and [4mmemLevel[24m.
+
+             The [4mstrategy[24m parameter is used to tune the compression algorithm.
+             Use the value Z_DEFAULT_STRATEGY for normal data; Z_FILTERED for
+             data produced by a filter (or predictor); Z_HUFFMAN_ONLY to force
+             Huffman encoding only (no string match), or Z_RLE to limit match
+             distances to one (run-length encoding).  Filtered data consists
+             mostly of small values with a somewhat random distribution.  In
+             this case, the compression algorithm is tuned to compress them
+             better.  The effect of Z_FILTERED is to force more Huffman coding
+             and less string matching; it is somewhat intermediate between
+             Z_DEFAULT and Z_HUFFMAN_ONLY.  Z_RLE is designed to be almost as
+             fast as Z_HUFFMAN_ONLY, but gives better compression for PNG im-
+             age data.  The [4mstrategy[24m parameter only affects the compression
+             ratio but not the correctness of the compressed output, even if
+             it is not set appropriately.  Z_FIXED prevents the use of dynamic
+             Huffman codes, allowing for a simpler decoder for special appli-
+             cations.
+
+             [1mdeflateInit2[22m() returns Z_OK if successful, Z_MEM_ERROR if there
+             was not enough memory, Z_STREAM_ERROR if a parameter is invalid
+             (such as an invalid method).  [4mmsg[24m is set to null if there is no
+             error message.  [1mdeflateInit2[22m() does not perform any compression:
+             this will be done by [1mdeflate[22m().
+
+     [4mint[24m [1mdeflateSetDictionary[22m([4mz_streamp[24m [4mstrm[24m, [4mconst[24m [4mBytef[24m [4m*dictionary[24m, [4muInt[0m
+             [4mdictLength[24m);
+
+             Initializes the compression dictionary from the given byte se-
+             quence without producing any compressed output.  This function
+             must be called immediately after [1mdeflateInit[22m(), [1mdeflateInit2[22m(),
+             or [1mdeflateReset[22m(), before any call to [1mdeflate[22m().  The compressor
+             and decompressor must use exactly the same dictionary (see
+             [1minflateSetDictionary[22m()).
+
+             The dictionary should consist of strings (byte sequences) that
+             are likely to be encountered later in the data to be compressed,
+             with the most commonly used strings preferably put towards the
+             end of the dictionary.  Using a dictionary is most useful when
+             the data to be compressed is short and can be predicted with good
+             accuracy; the data can then be compressed better than with the
+             default empty dictionary.
+
+             Depending on the size of the compression data structures selected
+             by [1mdeflateInit[22m() or [1mdeflateInit2[22m(), a part of the dictionary may
+             in effect be discarded, for example if the dictionary is larger
+             than the window size in [1mdeflate[22m() or [1mdeflate2[22m().  Thus the
+             strings most likely to be useful should be put at the end of the
+             dictionary, not at the front.  In addition, the current implemen-
+             tation of [1mdeflate[22m() will use at most the window size minus 262
+             bytes of the provided dictionary.
+
+             Upon return of this function, strm->adler is set to the Adler-32
+             value of the dictionary; the decompressor may later use this
+             value to determine which dictionary has been used by the compres-
+             sor.  (The Adler-32 value applies to the whole dictionary even if
+             only a subset of the dictionary is actually used by the compres-
+             sor.)  If a raw deflate was requested, then the Adler-32 value is
+             not computed and strm->adler is not set.
+
+             [1mdeflateSetDictionary[22m() returns Z_OK if successful, or
+             Z_STREAM_ERROR if a parameter is invalid (such as NULL
+             dictionary) or the stream state is inconsistent (for example if
+             [1mdeflate[22m() has already been called for this stream or if the com-
+             pression method is bsort).  [1mdeflateSetDictionary[22m() does not per-
+             form any compression: this will be done by [1mdeflate[22m().
+
+     [4mint[24m [1mdeflateCopy[22m([4mz_streamp[24m [4mdest[24m, [4mz_streamp[24m [4msource[24m);
+
+             The [1mdeflateCopy[22m() function sets the destination stream as a com-
+             plete copy of the source stream.
+
+             This function can be useful when several compression strategies
+             will be tried, for example when there are several ways of pre-
+             processing the input data with a filter.  The streams that will
+             be discarded should then be freed by calling [1mdeflateEnd[22m().  Note
+             that [1mdeflateCopy[22m() duplicates the internal compression state
+             which can be quite large, so this strategy is slow and can con-
+             sume lots of memory.
+
+             [1mdeflateCopy[22m() returns Z_OK if successful, Z_MEM_ERROR if there
+             was not enough memory, Z_STREAM_ERROR if the source stream state
+             was inconsistent (such as [4mzalloc[24m being NULL).  [4mmsg[24m is left un-
+             changed in both source and destination.
+
+     [4mint[24m [1mdeflateReset[22m([4mz_streamp[24m [4mstrm[24m);
+
+             This function is equivalent to [1mdeflateEnd[22m() followed by
+             [1mdeflateInit[22m(), but does not free and reallocate all the internal
+             compression state.  The stream will keep the same compression
+             level and any other attributes that may have been set by
+             [1mdeflateInit2[22m().
+
+             [1mdeflateReset[22m() returns Z_OK if successful, or Z_STREAM_ERROR if
+             the source stream state was inconsistent (such as [4mzalloc[24m or [4mstate[0m
+             being NULL).
+
+     [4mint[24m [1mdeflateParams[22m([4mz_streamp[24m [4mstrm[24m, [4mint[24m [4mlevel[24m, [4mint[24m [4mstrategy[24m);
+
+             The [1mdeflateParams[22m() function dynamically updates the compression
+             level and compression strategy.  The interpretation of level and
+             strategy is as in [1mdeflateInit2[22m().  This can be used to switch be-
+             tween compression and straight copy of the input data, or to
+             switch to a different kind of input data requiring a different
+             strategy.  If the compression level is changed, the input avail-
+             able so far is compressed with the old level (and may be
+             flushed); the new level will take effect only at the next call to
+             [1mdeflate[22m().
+
+             Before the call to [1mdeflateParams[22m(), the stream state must be set
+             as for a call to [1mdeflate[22m(), since the currently available input
+             may have to be compressed and flushed.  In particular,
+             strm->avail_out must be non-zero.
+
+             [1mdeflateParams[22m() returns Z_OK if successful, Z_STREAM_ERROR if the
+             source stream state was inconsistent or if a parameter was in-
+             valid, or Z_BUF_ERROR if strm->avail_out was zero.
+
+     [4mint[24m [1mdeflateTune[22m([4mz_streamp[24m [4mstrm[24m, [4mint[24m [4mgood_length[24m, [4mint[24m [4mmax_lazy[24m, [4mint[0m
+             [4mnice_length[24m, [4mint[24m [4mmax_chain[24m)
+
+             Fine tune [1mdeflate[22m()'s internal compression parameters.  This
+             should only be used by someone who understands the algorithm used
+             by zlib's deflate for searching for the best matching string, and
+             even then only by the most fanatic optimizer trying to squeeze
+             out the last compressed bit for their specific input data.  Read
+             the [4mdeflate.c[24m source code for the meaning of the [4mmax_lazy[24m,
+             [4mgood_length[24m, [4mnice_length[24m, and [4mmax_chain[24m parameters.
+
+             [1mdeflateTune[22m() can be called after [1mdeflateInit[22m() or
+             [1mdeflateInit2[22m(), and returns Z_OK on success, or Z_STREAM_ERROR
+             for an invalid deflate stream.
+
+     [4muLong[24m [1mdeflateBound[22m([4mz_streamp[24m [4mstrm[24m, [4muLong[24m [4msourceLen[24m)
+
+             [1mdeflateBound[22m() returns an upper bound on the compressed size af-
+             ter deflation of [4msourceLen[24m bytes.  It must be called after
+             [1mdeflateInit[22m() or [1mdeflateInit2[22m().  This would be used to allocate
+             an output buffer for deflation in a single pass, and so would be
+             called before [1mdeflate[22m().
+
+     [4mint[24m [1mdeflatePrime[22m([4mz_streamp[24m [4mstrm[24m, [4mint[24m [4mbits[24m, [4mint[24m [4mvalue[24m)
+
+             [1mdeflatePrime[22m() inserts [4mbits[24m in the deflate output stream.  The
+             intent is that this function is used to start off the deflate
+             output with the bits leftover from a previous deflate stream when
+             appending to it.  As such, this function can only be used for raw
+             deflate, and must be used before the first [1mdeflate[22m() call after a
+             [1mdeflateInit2[22m() or [1mdeflateReset[22m().  [4mbits[24m must be less than or
+             equal to 16, and that many of the least significant bits of [4mvalue[0m
+             will be inserted in the output.
+
+             [1mdeflatePrime[22m() returns Z_OK if successful, or Z_STREAM_ERROR if
+             the source stream state was inconsistent.
+
+     [4mint[24m [1mdeflateSetHeader[22m([4mz_streamp[24m [4mstrm[24m, [4mgz_headerp[24m [4mhead[24m)
+
+             [1mdeflateSetHeader[22m() provides gzip header information for when a
+             gzip stream is requested by [1mdeflateInit2[22m().  [1mdeflateSetHeader[22m()
+             may be called after [1mdeflateInit2[22m() or [1mdeflateReset[22m() and before
+             the first call of [1mdeflate[22m().  The text, time, os, extra field,
+             name, and comment information in the provided gz_header structure
+             are written to the gzip header (xflag is ignored - the extra
+             flags are set according to the compression level).  The caller
+             must assure that, if not Z_NULL, [4mname[24m and [4mcomment[24m are terminated
+             with a zero byte, and that if [4mextra[24m is not Z_NULL, that [4mextra_len[0m
+             bytes are available there.  If hcrc is true, a gzip header CRC is
+             included.  Note that the current versions of the command-line
+             version of gzip(1) do not support header CRCs, and will report
+             that it is a "multi-part gzip file" and give up.
+
+             If [1mdeflateSetHeader[22m() is not used, the default gzip header has
+             text false, the time set to zero, and os set to 255, with no ex-
+             tra, name, or comment fields.  The gzip header is returned to the
+             default state by [1mdeflateReset[22m().
+
+             [1mdeflateSetHeader[22m() returns Z_OK if successful, or Z_STREAM_ERROR
+             if the source stream state was inconsistent.
+
+     [4mint[24m [1minflateInit2[22m([4mz_streamp[24m [4mstrm[24m, [4mint[24m [4mwindowBits[24m);
+
+             This is another version of [1minflateInit[22m() with an extra parameter.
+             The fields [4mnext_in[24m, [4mavail_in[24m, [4mzalloc[24m, [4mzfree[24m, and [4mopaque[24m must be
+             initialized before by the caller.
+
+             The [4mwindowBits[24m parameter is the base two logarithm of the maximum
+             window size (the size of the history buffer).  It should be in
+             the range 8..15 for this version of the library.  The default
+             value is 15 if [1minflateInit[22m() is used instead.  [4mwindowBits[24m must be
+             greater than or equal to the [4mwindowBits[24m value provided to
+             [1mdeflateInit2[22m() while compressing, or it must be equal to 15 if
+             [1mdeflateInit2[22m() was not used.  If a compressed stream with a
+             larger window size is given as input, [1minflate[22m() will return with
+             the error code Z_DATA_ERROR instead of trying to allocate a
+             larger window.
+
+             [4mwindowBits[24m can also be -8..-15 for raw inflate.  In this case,
+             -windowBits determines the window size.  [1minflate[22m() will then
+             process raw deflate data, not looking for a zlib or gzip header,
+             not generating a check value, and not looking for any check val-
+             ues for comparison at the end of the stream.  This is for use
+             with other formats that use the deflate compressed data format
+             such as zip.  Those formats provide their own check values.  If a
+             custom format is developed using the raw deflate format for com-
+             pressed data, it is recommended that a check value such as an
+             Adler-32 or a crc32 be applied to the uncompressed data as is
+             done in the zlib, gzip, and zip formats.  For most applications,
+             the zlib format should be used as is.  Note that comments above
+             on the use in [1mdeflateInit2[22m() applies to the magnitude of
+             [4mwindowBits[24m.
+
+             [4mwindowBits[24m can also be greater than 15 for optional gzip decod-
+             ing.  Add 32 to windowBits to enable zlib and gzip decoding with
+             automatic header detection, or add 16 to decode only the gzip
+             format (the zlib format will return a Z_DATA_ERROR).  If a gzip
+             stream is being decoded, strm->adler is a crc32 instead of an
+             adler32.
+
+             [1minflateInit2[22m() returns Z_OK if successful, Z_MEM_ERROR if there
+             was not enough memory, Z_STREAM_ERROR if a parameter is invalid
+             (such as a null strm).  [4mmsg[24m is set to null if there is no error
+             message.  [1minflateInit2[22m() does not perform any decompression apart
+             from reading the [1mzlib [22mheader if present: this will be done by
+             [1minflate[22m().  (So [4mnext_in[24m and [4mavail_in[24m may be modified, but
+             [4mnext_out[24m and [4mavail_out[24m are unchanged.)
+
+     [4mint[24m [1minflateSetDictionary[22m([4mz_streamp[24m [4mstrm[24m, [4mconst[24m [4mBytef[24m [4m*dictionary[24m, [4muInt[0m
+             [4mdictLength[24m);
+
+             Initializes the decompression dictionary from the given uncom-
+             pressed byte sequence.  This function must be called immediately
+             after a call to [1minflate[22m() if that call returned Z_NEED_DICT.  The
+             dictionary chosen by the compressor can be determined from the
+             Adler-32 value returned by that call to [1minflate[22m().  The compres-
+             sor and decompressor must use exactly the same dictionary (see
+             [1mdeflateSetDictionary[22m()).  For raw inflate, this function can be
+             called immediately after [1minflateInit2[22m() or [1minflateReset[22m() and be-
+             fore any call to [1minflate[22m() to set the dictionary.  The applica-
+             tion must ensure that the dictionary that was used for compres-
+             sion is provided.
+
+             [1minflateSetDictionary[22m() returns Z_OK if successful, Z_STREAM_ERROR
+             if a parameter is invalid (such as NULL dictionary) or the stream
+             state is inconsistent, Z_DATA_ERROR if the given dictionary
+             doesn't match the expected one (incorrect Adler-32 value).
+             [1minflateSetDictionary[22m() does not perform any decompression: this
+             will be done by subsequent calls of [1minflate[22m().
+
+     [4mint[24m [1minflateSync[22m([4mz_streamp[24m [4mstrm[24m);
+
+             Skips invalid compressed data until a full flush point (see above
+             the description of [1mdeflate[22m() with Z_FULL_FLUSH) can be found, or
+             until all available input is skipped.  No output is provided.
+
+             [1minflateSync[22m() returns Z_OK if a full flush point has been found,
+             Z_BUF_ERROR if no more input was provided, Z_DATA_ERROR if no
+             flush point has been found, or Z_STREAM_ERROR if the stream
+             structure was inconsistent.  In the success case, the application
+             may save the current value of [4mtotal_in[24m which indicates where
+             valid compressed data was found.  In the error case, the applica-
+             tion may repeatedly call [1minflateSync[22m(), providing more input each
+             time, until success or end of the input data.
+
+     [4mint[24m [1minflateCopy[22m([4mz_streamp[24m [4mdest[24m, [4mz_streamp[24m [4msource[24m)
+
+             Sets the destination stream as a complete copy of the source
+             stream.
+
+             This function can be useful when randomly accessing a large
+             stream.  The first pass through the stream can periodically
+             record the inflate state, allowing restarting inflate at those
+             points when randomly accessing the stream.
+
+             [1minflateCopy[22m() returns Z_OK if success, Z_MEM_ERROR if there was
+             not enough memory, Z_STREAM_ERROR if the source stream state was
+             inconsistent (such as [4mzalloc[24m being NULL).  [4mmsg[24m is left unchanged
+             in both [4msource[24m and [4mdest[24m.
+
+     [4mint[24m [1minflateReset[22m([4mz_streamp[24m [4mstrm[24m);
+
+             This function is equivalent to [1minflateEnd[22m() followed by
+             [1minflateInit[22m(), but does not free and reallocate all the internal
+             decompression state.  The stream will keep attributes that may
+             have been set by [1minflateInit2[22m().
+
+             [1minflateReset[22m() returns Z_OK if successful, or Z_STREAM_ERROR if
+             the source stream state was inconsistent (such as [4mzalloc[24m or [4mstate[0m
+             being NULL).
+
+     [4mint[24m [1minflatePrime[22m([4mz_stream[24m [4mstrm[24m, [4mint[24m [4mbits[24m, [4mint[24m [4mvalue[24m)
+
+             This function inserts bits in the inflate input stream.  The in-
+             tent is that this function is used to start inflating at a bit
+             position in the middle of a byte.  The provided bits will be used
+             before any bytes are used from [4mnext_in[24m.  This function should
+             only be used with raw inflate, and should be used before the
+             first [1minflate[22m() call after [1minflateInit2[22m() or [1minflateReset[22m().
+             [4mbits[24m must be less than or equal to 16, and that many of the least
+             significant bits of value will be inserted in the input.
+
+             [1minflatePrime[22m() returns Z_OK if successful, or Z_STREAM_ERROR if
+             the source stream state was inconsistent.
+
+     [4mint[24m [1minflateGetHeader[22m([4mz_streamp[24m [4mstrm[24m, [4mgz_headerp[24m [4mhead[24m)
+
+             [1minflateGetHeader[22m() requests that gzip header information be
+             stored in the provided gz_header structure.  [1minflateGetHeader[22m()
+             may be called after [1minflateInit2[22m() or [1minflateReset[22m(), and before
+             the first call of [1minflate[22m().  As [1minflate[22m() processes the gzip
+             stream, head->done is zero until the header is completed, at
+             which time head->done is set to one.  If a zlib stream is being
+             decoded, then head->done is set to -1 to indicate that there will
+             be no gzip header information forthcoming.  Note that Z_BLOCK can
+             be used to force [1minflate[22m() to return immediately after header
+             processing is complete and before any actual data is decom-
+             pressed.
+
+             The text, time, xflags, and os fields are filled in with the gzip
+             header contents.  hcrc is set to true if there is a header CRC.
+             (The header CRC was valid if done is set to one.)  If extra is
+             not Z_NULL, then [4mextra_max[24m contains the maximum number of bytes
+             to write to [4mextra[24m.  Once done is true, [4mextra_len[24m contains the ac-
+             tual extra field length, and [4mextra[24m contains the extra field, or
+             that field truncated if [4mextra_max[24m is less than [4mextra_len[24m.  If
+             name is not Z_NULL, then up to [4mname_max[24m characters are written
+             there, terminated with a zero unless the length is greater than
+             [4mname_max[24m.  If comment is not Z_NULL, then up to [4mcomm_max[24m charac-
+             ters are written there, terminated with a zero unless the length
+             is greater than [4mcomm_max[24m.  When any of extra, name, or comment
+             are not Z_NULL and the respective field is not present in the
+             header, then that field is set to Z_NULL to signal its absence.
+             This allows the use of [1mdeflateSetHeader[22m() with the returned
+             structure to duplicate the header.  However if those fields are
+             set to allocated memory, then the application will need to save
+             those pointers elsewhere so that they can be eventually freed.
+
+             If [1minflateGetHeader[22m() is not used, then the header information is
+             simply discarded.  The header is always checked for validity, in-
+             cluding the header CRC if present.  [1minflateReset[22m() will reset the
+             process to discard the header information.  The application would
+             need to call [1minflateGetHeader[22m() again to retrieve the header from
+             the next gzip stream.
+
+             [1minflateGetHeader[22m() returns Z_OK if successful, or Z_STREAM_ERROR
+             if the source stream state was inconsistent.
+
+     [4mint[24m [1minflateBackInit[22m([4mz_stream[24m [4m*strm[24m, [4mint[24m [4mwindowBits[24m, [4munsigned[24m [4mchar[24m [4mFAR[0m
+             [4m*window[24m)
+
+             Initialize the internal stream state for decompression using
+             [1minflateBack[22m() calls.  The fields [4mzalloc[24m, [4mzfree[24m and [4mopaque[24m in [4mstrm[0m
+             must be initialized before the call.  If [4mzalloc[24m and [4mzfree[24m are
+             Z_NULL, then the default library-derived memory allocation rou-
+             tines are used.  [4mwindowBits[24m is the base two logarithm of the win-
+             dow size, in the range 8..15.  [4mwindow[24m is a caller supplied buffer
+             of that size.  Except for special applications where it is as-
+             sured that [1mdeflate[22m() was used with small window sizes, [4mwindowBits[0m
+             must be 15 and a 32K byte window must be supplied to be able to
+             decompress general deflate streams.
+
+             See [1minflateBack[22m() for the usage of these routines.
+
+             [1minflateBackInit[22m() will return Z_OK on success, Z_STREAM_ERROR if
+             any of the parameters are invalid, Z_MEM_ERROR if the internal
+             state could not be allocated, or Z_VERSION_ERROR if the version
+             of the library does not match the version of the header file.
+
+     [4mint[24m [1minflateBack[22m([4mz_stream[24m [4m*strm[24m, [4min_func[24m [4min[24m, [4mvoid[24m [4mFAR[24m [4m*in_desc[24m, [4mout_func[0m
+             [4mout[24m, [4mvoid[24m [4mFAR[24m [4m*out_desc[24m)
+
+             [1minflateBack[22m() does a raw inflate with a single call using a call-
+             back interface for input and output.  This is more efficient than
+             [1minflate[22m() for file I/O applications in that it avoids copying be-
+             tween the output and the sliding window by simply making the win-
+             dow itself the output buffer.  This function trusts the applica-
+             tion to not change the output buffer passed by the output func-
+             tion, at least until [1minflateBack[22m() returns.
+
+             [1minflateBackInit[22m() must be called first to allocate the internal
+             state and to initialize the state with the user-provided window
+             buffer.  [1minflateBack[22m() may then be used multiple times to inflate
+             a complete, raw deflate stream with each call.  [1minflateBackEnd[22m()
+             is then called to free the allocated state.
+
+             A raw deflate stream is one with no zlib or gzip header or
+             trailer.  This routine would normally be used in a utility that
+             reads zip or gzip files and writes out uncompressed files.  The
+             utility would decode the header and process the trailer on its
+             own, hence this routine expects only the raw deflate stream to
+             decompress.  This is different from the normal behavior of
+             [1minflate[22m(), which expects either a zlib or gzip header and trailer
+             around the deflate stream.
+
+             [1minflateBack[22m() uses two subroutines supplied by the caller that
+             are then called by [1minflateBack[22m() for input and output.
+             [1minflateBack[22m() calls those routines until it reads a complete de-
+             flate stream and writes out all of the uncompressed data, or un-
+             til it encounters an error.  The function's parameters and return
+             types are defined above in the in_func and out_func typedefs.
+             [1minflateBack[22m() will call in(in_desc, &buf) which should return the
+             number of bytes of provided input, and a pointer to that input in
+             [4mbuf[24m.  If there is no input available, [1min[22m() must return zero --
+             buf is ignored in that case -- and [1minflateBack[22m() will return a
+             buffer error.  [1minflateBack[22m() will call out(out_desc, buf, len) to
+             write the uncompressed data buf[0..len-1].  [1mout[22m() should return
+             zero on success, or non-zero on failure.  If [1mout[22m() returns non-
+             zero, [1minflateBack[22m() will return with an error.  Neither [1min[22m() nor
+             [1mout[22m() are permitted to change the contents of the window provided
+             to [1minflateBackInit[22m(), which is also the buffer that [1mout[22m() uses to
+             write from.  The length written by [1mout[22m() will be at most the win-
+             dow size.  Any non-zero amount of input may be provided by [1min[22m().
+
+             For convenience, [1minflateBack[22m() can be provided input on the first
+             call by setting strm->next_in and strm->avail_in.  If that input
+             is exhausted, then [1min[22m() will be called.  Therefore strm->next_in
+             must be initialized before calling [1minflateBack[22m().  If
+             strm->next_in is Z_NULL, then [1min[22m() will be called immediately for
+             input.  If strm->next_in is not Z_NULL, then strm->avail_in must
+             also be initialized, and then if strm->avail_in is not zero, in-
+             put will initially be taken from strm->next_in[0 ..
+             strm->avail_in - 1].
+
+             The [4min_desc[24m and [4mout_desc[24m parameters of [1minflateBack[22m() are passed
+             as the first parameter of [1min[22m() and [1mout[22m() respectively when they
+             are called.  These descriptors can be optionally used to pass any
+             information that the caller-supplied [1min[22m() and [1mout[22m() functions
+             need to do their job.
+
+             On return, [1minflateBack[22m() will set strm->next_in and
+             strm->avail_in to pass back any unused input that was provided by
+             the last [1min[22m() call.  The return values of [1minflateBack[22m() can be
+             Z_STREAM_END on success, Z_BUF_ERROR if [1min[22m() or [1mout[22m() returned an
+             error, Z_DATA_ERROR if there was a format error in the deflate
+             stream (in which case strm->msg is set to indicate the nature of
+             the error), or Z_STREAM_ERROR if the stream was not properly ini-
+             tialized.  In the case of Z_BUF_ERROR, an input or output error
+             can be distinguished using strm->next_in which will be Z_NULL
+             only if [1min[22m() returned an error.  If strm->next is not Z_NULL,
+             then the Z_BUF_ERROR was due to [1mout[22m() returning non-zero.  ([1min[22m()
+             will always be called before [1mout[22m(), so strm->next_in is assured
+             to be defined if [1mout[22m() returns non-zero.)  Note that
+             [1minflateBack[22m() cannot return Z_OK.
+
+     [4mint[24m [1minflateBackEnd[22m([4mz_stream[24m [4m*strm[24m)
+
+             All memory allocated by [1minflateBackInit[22m() is freed.
+
+             [1minflateBackEnd[22m() returns Z_OK on success, or Z_STREAM_ERROR if
+             the stream state was inconsistent.
+
+     [4muLong[24m [1mzlibCompileFlags[22m([4mvoid[24m)
+
+             This function returns flags indicating compile-time options.
+
+             Type sizes, two bits each:
+
+                   00      16 bits
+                   01      32 bits
+                   10      64 bits
+                   11      other:
+
+                                 1.0     size of uInt
+                                 3.2     size of uLong
+                                 5.4     size of voidpf (pointer)
+                                 7.6     size of z_off_t
+
+             Compiler, assembler, and debug options:
+
+                   8       DEBUG
+                   9       ASMV or ASMINF -- use ASM code
+                   10      ZLIB_WINAPI -- exported functions use the WINAPI
+                           calling convention
+                   11      0 (reserved)
+
+             One-time table building (smaller code, but not thread-safe if
+             true):
+
+                   12      BUILDFIXED -- build static block decoding tables
+                           when needed
+                   13      DYNAMIC_CRC_TABLE -- build CRC calculation tables
+                           when needed
+                   14,15   0 (reserved)
+
+             Library content (indicates missing functionality):
+
+                   16      NO_GZCOMPRESS -- gz* functions cannot compress (to
+                           avoid linking deflate code when not needed)
+                   17      NO_GZIP -- deflate can't write gzip streams, and
+                           inflate can't detect and decode gzip streams (to
+                           avoid linking CRC code)
+                   18-19   0 (reserved)
+
+             Operation variations (changes in library functionality):
+
+                   20      PKZIP_BUG_WORKAROUND -- slightly more permissive
+                           inflate
+                   21      FASTEST -- deflate algorithm with only one, lowest
+                           compression level
+                   22,23   0 (reserved)
+
+             The sprintf variant used by gzprintf (zero is best):
+
+                   24      0 = vs*, 1 = s* -- 1 means limited to 20 arguments
+                           after the format
+                   25      0 = *nprintf, 1 = *printf -- 1 means [1mgzprintf[22m() not
+                           secure!
+                   26      0 = returns value, 1 = void -- 1 means inferred
+                           string length returned
+
+             Remainder:
+
+                   27-31   0 (reserved)
+
+[1mUTILITY FUNCTIONS[0m
+     The following utility functions are implemented on top of the basic
+     stream-oriented functions.  To simplify the interface, some default op-
+     tions are assumed (compression level and memory usage, standard memory
+     allocation functions).  The source code of these utility functions can
+     easily be modified if you need special options.
+
+     [4mint[24m [1mcompress[22m([4mBytef[24m [4m*dest[24m, [4muLongf[24m [4m*destLen[24m, [4mconst[24m [4mBytef[24m [4m*source[24m, [4muLong[0m
+             [4msourceLen[24m);
+
+             The [1mcompress[22m() function compresses the source buffer into the
+             destination buffer.  [4msourceLen[24m is the byte length of the source
+             buffer.  Upon entry, [4mdestLen[24m is the total size of the destination
+             buffer, which must be at least the value returned by
+             [1mcompressBound[22m([4msourcelen[24m).  Upon exit, [4mdestLen[24m is the actual size
+             of the compressed buffer.  This function can be used to compress
+             a whole file at once if the input file is mmap'ed.
+
+             [1mcompress[22m() returns Z_OK if successful, Z_MEM_ERROR if there was
+             not enough memory, or Z_BUF_ERROR if there was not enough room in
+             the output buffer.
+
+     [4mint[24m [1mcompress2[22m([4mBytef[24m [4m*dest[24m, [4muLongf[24m [4m*destLen[24m, [4mconst[24m [4mBytef[24m [4m*source[24m, [4muLong[0m
+             [4msourceLen[24m, [4mint[24m [4mlevel[24m);
+
+             The [1mcompress2[22m() function compresses the source buffer into the
+             destination buffer.  The [4mlevel[24m parameter has the same meaning as
+             in [1mdeflateInit[22m().  [4msourceLen[24m is the byte length of the source
+             buffer.  Upon entry, [4mdestLen[24m is the total size of the destination
+             buffer, which must be at least the value returned by
+             [1mcompressBound[22m([4msourceLen[24m).  Upon exit, [4mdestLen[24m is the actual size
+             of the compressed buffer.
+
+             [1mcompress2[22m() returns Z_OK if successful, Z_MEM_ERROR if there was
+             not enough memory, Z_BUF_ERROR if there was not enough room in
+             the output buffer, or Z_STREAM_ERROR if the level parameter is
+             invalid.
+
+     [4mint[24m [1mcompressBound[22m([4muLong[24m [4msourceLen[24m)
+
+             [1mcompressBound[22m() returns an upper bound on the compressed size af-
+             ter [1mcompress[22m() or [1mcompress2[22m() on [4msourceLen[24m bytes.  It would be
+             used before a [1mcompress[22m() or [1mcompress2[22m() call to allocate the des-
+             tination buffer.
+
+     [4mint[24m [1muncompress[22m([4mBytef[24m [4m*dest[24m, [4muLongf[24m [4m*destLen[24m, [4mconst[24m [4mBytef[24m [4m*source[24m, [4muLong[0m
+             [4msourceLen[24m);
+
+             The [1muncompress[22m() function decompresses the source buffer into the
+             destination buffer.  [4msourceLen[24m is the byte length of the source
+             buffer.  Upon entry, [4mdestLen[24m is the total size of the destination
+             buffer, which must be large enough to hold the entire uncom-
+             pressed data.  (The size of the uncompressed data must have been
+             saved previously by the compressor and transmitted to the decom-
+             pressor by some mechanism outside the scope of this compression
+             library.)  Upon exit, [4mdestLen[24m is the actual size of the com-
+             pressed buffer.  This function can be used to decompress a whole
+             file at once if the input file is mmap'ed.
+
+             [1muncompress[22m() returns Z_OK if successful, Z_MEM_ERROR if there was
+             not enough memory, Z_BUF_ERROR if there was not enough room in
+             the output buffer, or Z_DATA_ERROR if the input data was cor-
+             rupted or incomplete.
+
+     [4mgzFile[24m [1mgzopen[22m([4mconst[24m [4mchar[24m [4m*path[24m, [4mconst[24m [4mchar[24m [4m*mode[24m);
+
+             The [1mgzopen[22m() function opens a gzip (.gz) file for reading or
+             writing.  The mode parameter is as in fopen(3) ("rb" or "wb") but
+             can also include a compression level (wb9) or a strategy: `f' for
+             filtered data, as in "wb6f"; `h' for Huffman only compression, as
+             in "wb1h", or `R' for run-length encoding as in "wb1R".  (See the
+             description of [1mdeflateInit2[22m() for more information about the
+             strategy parameter.)
+
+             [1mgzopen[22m() can be used to read a file which is not in gzip format;
+             in this case [1mgzread[22m() will directly read from the file without
+             decompression.
+
+             [1mgzopen[22m() returns NULL if the file could not be opened or if there
+             was insufficient memory to allocate the (de)compression state;
+             errno can be checked to distinguish the two cases (if errno is
+             zero, the [1mzlib [22merror is Z_MEM_ERROR).
+
+     [4mgzFile[24m [1mgzdopen[22m([4mint[24m [4mfd[24m, [4mconst[24m [4mchar[24m [4m*mode[24m);
+
+             The [1mgzdopen[22m() function associates a gzFile with the file descrip-
+             tor [4mfd[24m.  File descriptors are obtained from calls like open(2),
+             dup(2), creat(3), pipe(2), or fileno(3) (if the file has been
+             previously opened with fopen(3)).  The [4mmode[24m parameter is as in
+             [1mgzopen[22m().
+
+             The next call to [1mgzclose[22m() on the returned gzFile will also close
+             the file descriptor fd, just like fclose(fdopen(fd), mode) closes
+             the file descriptor fd.  If you want to keep fd open, use gz-
+             dopen(dup(fd), mode).
+
+             [1mgzdopen[22m() returns NULL if there was insufficient memory to allo-
+             cate the (de)compression state.
+
+     [4mint[24m [1mgzsetparams[22m([4mgzFile[24m [4mfile[24m, [4mint[24m [4mlevel[24m, [4mint[24m [4mstrategy[24m);
+
+             The [1mgzsetparams[22m() function dynamically updates the compression
+             level or strategy.  See the description of [1mdeflateInit2[22m() for the
+             meaning of these parameters.
+
+             [1mgzsetparams[22m() returns Z_OK if successful, or Z_STREAM_ERROR if
+             the file was not opened for writing.
+
+     [4mint[24m [1mgzread[22m([4mgzFile[24m [4mfile[24m, [4mvoidp[24m [4mbuf[24m, [4munsigned[24m [4mlen[24m);
+
+             The [1mgzread[22m() function reads the given number of uncompressed
+             bytes from the compressed file.  If the input file was not in
+             gzip format, [1mgzread[22m() copies the given number of bytes into the
+             buffer.
+
+             [1mgzread[22m() returns the number of uncompressed bytes actually read
+             (0 for end of file, -1 for error).
+
+     [4mint[24m [1mgzwrite[22m([4mgzFile[24m [4mfile[24m, [4mvoidpc[24m [4mbuf[24m, [4munsigned[24m [4mlen[24m);
+
+             The [1mgzwrite[22m() function writes the given number of uncompressed
+             bytes into the compressed file.  [1mgzwrite[22m() returns the number of
+             uncompressed bytes actually written (0 in case of error).
+
+     [4mint[24m [1mgzprintf[22m([4mgzFile[24m [4mfile[24m, [4mconst[24m [4mchar[24m [4m*format[24m, [4m...[24m);
+
+             The [1mgzprintf[22m() function converts, formats, and writes the args to
+             the compressed file under control of the format string, as in
+             fprintf(3).  [1mgzprintf[22m() returns the number of uncompressed bytes
+             actually written (0 in case of error).  The number of uncom-
+             pressed bytes written is limited to 4095.  The caller should make
+             sure that this limit is not exceeded.  If it is exceeded, then
+             [1mgzprintf[22m() will return an error (0) with nothing written.  In
+             this case, there may also be a buffer overflow with unpredictable
+             consequences, which is possible only if [1mzlib [22mwas compiled with
+             the insecure functions [1msprintf[22m() or [1mvsprintf[22m() because the secure
+             [1msnprintf[22m() or [1mvsnprintf[22m() functions were not available.
+
+     [4mint[24m [1mgzputs[22m([4mgzFile[24m [4mfile[24m, [4mconst[24m [4mchar[24m [4m*s[24m);
+
+             The [1mgzputs[22m() function writes the given null-terminated string to
+             the compressed file, excluding the terminating null character.
+
+             [1mgzputs[22m() returns the number of characters written, or -1 in case
+             of error.
+
+     [4mchar[24m [4m*[24m [1mgzgets[22m([4mgzFile[24m [4mfile[24m, [4mchar[24m [4m*buf[24m, [4mint[24m [4mlen[24m);
+
+             The [1mgzgets[22m() function reads bytes from the compressed file until
+             len-1 characters are read, or a newline character is read and
+             transferred to [4mbuf[24m, or an end-of-file condition is encountered.
+             The string is then terminated with a null character.
+
+             [1mgzgets[22m() returns [4mbuf[24m, or Z_NULL in case of error.
+
+     [4mint[24m [1mgzputc[22m([4mgzFile[24m [4mfile[24m, [4mint[24m [4mc[24m);
+
+             The [1mgzputc[22m() function writes [4mc[24m, converted to an unsigned char,
+             into the compressed file.  [1mgzputc[22m() returns the value that was
+             written, or -1 in case of error.
+
+     [4mint[24m [1mgzgetc[22m([4mgzFile[24m [4mfile[24m);
+
+             The [1mgzgetc[22m() function reads one byte from the compressed file.
+             [1mgzgetc[22m() returns this byte or -1 in case of end of file or error.
+
+     [4mint[24m [1mgzungetc[22m([4mint[24m [4mc[24m, [4mgzFile[24m [4mfile[24m)
+
+             Push one character back onto the stream to be read again later.
+             Only one character of push-back is allowed.  [1mgzungetc[22m() returns
+             the character pushed, or -1 on failure.  [1mgzungetc[22m() will fail if
+             a character has been pushed but not read yet, or if [4mc[24m is -1.  The
+             pushed character will be discarded if the stream is repositioned
+             with [1mgzseek[22m() or [1mgzrewind[22m().
+
+     [4mint[24m [1mgzflush[22m([4mgzFile[24m [4mfile[24m, [4mint[24m [4mflush[24m);
+
+             The [1mgzflush[22m() function flushes all pending output into the com-
+             pressed file.  The parameter [4mflush[24m is as in the [1mdeflate[22m() func-
+             tion.  The return value is the [1mzlib [22merror number (see function
+             [1mgzerror[22m() below).  [1mgzflush[22m() returns Z_OK if the flush parameter
+             is Z_FINISH and all output could be flushed.
+
+             [1mgzflush[22m() should be called only when strictly necessary because
+             it can degrade compression.
+
+     [4mz_off_t[24m [1mgzseek[22m([4mgzFile[24m [4mfile[24m, [4mz_off_t[24m [4moffset[24m, [4mint[24m [4mwhence[24m);
+
+             Sets the starting position for the next [1mgzread[22m() or [1mgzwrite[22m() on
+             the given compressed file.  The offset represents a number of
+             bytes in the uncompressed data stream.  The whence parameter is
+             defined as in lseek(2); the value SEEK_END is not supported.
+
+             If the file is opened for reading, this function is emulated but
+             can be extremely slow.  If the file is opened for writing, only
+             forward seeks are supported; [1mgzseek[22m() then compresses a sequence
+             of zeroes up to the new starting position.
+
+             [1mgzseek[22m() returns the resulting offset location as measured in
+             bytes from the beginning of the uncompressed stream, or -1 in
+             case of error, in particular if the file is opened for writing
+             and the new starting position would be before the current posi-
+             tion.
+
+     [4mint[24m [1mgzrewind[22m([4mgzFile[24m [4mfile[24m);
+
+             The [1mgzrewind[22m() function rewinds the given [4mfile[24m.  This function is
+             supported only for reading.
+
+             gzrewind(file) is equivalent to (int)gzseek(file, 0L, SEEK_SET).
+
+     [4mz_off_t[24m [1mgztell[22m([4mgzFile[24m [4mfile[24m);
+
+             The [1mgztell[22m() function returns the starting position for the next
+             [1mgzread[22m() or [1mgzwrite[22m() on the given compressed file.  This posi-
+             tion represents a number of bytes in the uncompressed data
+             stream.
+
+             gztell(file) is equivalent to gzseek(file, 0L, SEEK_CUR).
+
+     [4mint[24m [1mgzeof[22m([4mgzFile[24m [4mfile[24m);
+
+             The [1mgzeof[22m() function returns 1 when EOF has previously been de-
+             tected reading the given input stream, otherwise zero.
+
+     [4mint[24m [1mgzdirect[22m([4mgzFile[24m [4mfile[24m);
+
+             The [1mgzdirect[22m() function returns 1 if the file is being read di-
+             rectly without compression; otherwise it returns 0.
+
+     [4mint[24m [1mgzclose[22m([4mgzFile[24m [4mfile[24m);
+
+             The [1mgzclose[22m() function flushes all pending output if necessary,
+             closes the compressed file and deallocates all the (de)compres-
+             sion state.  The return value is the [1mzlib [22merror number (see func-
+             tion [1mgzerror[22m() below).
+
+     [4mconst[24m [4mchar[24m [4m*[24m [1mgzerror[22m([4mgzFile[24m [4mfile[24m, [4mint[24m [4m*errnum[24m);
+
+             The [1mgzerror[22m() function returns the error message for the last er-
+             ror which occurred on the given compressed [4mfile[24m.  [4merrnum[24m is set
+             to the [1mzlib [22merror number.  If an error occurred in the file sys-
+             tem and not in the compression library, [4merrnum[24m is set to Z_ERRNO
+             and the application may consult errno to get the exact error
+             code.
+
+     [4mvoid[24m [1mgzclearerr[22m([4mgzFile[24m [4mfile[24m)
+             Clears the error and end-of-file flags for [4mfile[24m.  This is analo-
+             gous to the [1mclearerr[22m() function in stdio.  This is useful for
+             continuing to read a gzip file that is being written concur-
+             rently.
+
+[1mCHECKSUM FUNCTIONS[0m
+     These functions are not related to compression but are exported anyway
+     because they might be useful in applications using the compression li-
+     brary.
+
+     [4muLong[24m [1madler32[22m([4muLong[24m [4madler[24m, [4mconst[24m [4mBytef[24m [4m*buf[24m, [4muInt[24m [4mlen[24m);
+             The [1madler32[22m() function updates a running Adler-32 checksum with
+             the bytes buf[0..len-1] and returns the updated checksum.  If [4mbuf[0m
+             is NULL, this function returns the required initial value for the
+             checksum.
+
+             An Adler-32 checksum is almost as reliable as a CRC32 but can be
+             computed much faster.  Usage example:
+
+                   uLong adler = adler32(0L, Z_NULL, 0);
+
+                   while (read_buffer(buffer, length) != EOF) {
+                   adler = adler32(adler, buffer, length);
+                   }
+                   if (adler != original_adler) error();
+
+     [4muLong[24m [1madler32_combine[22m([4muLong[24m [4madler1[24m, [4muLong[24m [4madler2[24m, [4mz_off_t[24m [4mlen2[24m)
+
+             The [1madler32_combine[22m() function combines two Adler-32 checksums
+             into one.  For two sequences of bytes, seq1 and seq2 with lengths
+             len1 and len2, Adler-32 checksums are calculated for each, adler1
+             and adler2.  [1madler32_combine[22m() returns the Adler-32 checksum of
+             seq1 and seq2 concatenated, requiring only adler1, adler2, and
+             len2.
+
+     [4muLong[24m [1mcrc32[22m([4muLong[24m [4mcrc[24m, [4mconst[24m [4mBytef[24m [4m*buf[24m, [4muInt[24m [4mlen[24m);
+
+             The [1mcrc32[22m() function updates a running CRC-32 with the bytes
+             buf[0..len-1] and returns the updated CRC-32.  If [4mbuf[24m is NULL,
+             this function returns the required initial value for the CRC.
+             Pre- and post-conditioning (one's complement) is performed within
+             this function so it shouldn't be done by the application.  Usage
+             example:
+
+                   uLong crc = crc32(0L, Z_NULL, 0);
+
+                   while (read_buffer(buffer, length) != EOF) {
+                   crc = crc32(crc, buffer, length);
+                   }
+                   if (crc != original_crc) error();
+
+     [4muLong[24m [1mcrc32_combine[22m([4muLong[24m [4mcrc1[24m, [4muLong[24m [4mcrc2[24m, [4mz_off_t[24m [4mlen2[24m)
+
+             The [1mcrc32_combine[22m() function combines two CRC-32 check values
+             into one.  For two sequences of bytes, seq1 and seq2 with lengths
+             len1 and len2, CRC-32 check values are calculated for each, crc1
+             and crc2.  [1mcrc32_combine[22m() returns the CRC-32 check value of seq1
+             and seq2 concatenated, requiring only crc1, crc2, and len2.
+
+[1mSTRUCTURES[0m
+     struct internal_state;
+
+     typedef struct z_stream_s {
+         Bytef    *next_in;  /* next input byte */
+         uInt     avail_in;  /* number of bytes available at next_in */
+         off_t    total_in;  /* total nb of input bytes read so far */
+
+         Bytef    *next_out; /* next output byte should be put there */
+         uInt     avail_out; /* remaining free space at next_out */
+         off_t    total_out; /* total nb of bytes output so far */
+
+         char     *msg;      /* last error message, NULL if no error */
+         struct internal_state FAR *state; /* not visible by applications */
+
+         alloc_func zalloc;  /* used to allocate the internal state */
+         free_func  zfree;   /* used to free the internal state */
+         voidpf     opaque;  /* private data object passed to zalloc and zfree*/
+
+         int     data_type;  /* best guess about the data type: binary or text*/
+         uLong   adler;      /* adler32 value of the uncompressed data */
+         uLong   reserved;   /* reserved for future use */
+     } z_stream;
+
+     typedef z_stream FAR * z_streamp;
+
+     /*
+          gzip header information passed to and from zlib routines.
+       See RFC 1952 for more details on the meanings of these fields.
+     */
+     typedef struct gz_header_s {
+         int     text;       /* true if compressed data believed to be text */
+         uLong   time;       /* modification time */
+         int     xflags;     /*extra flags (not used when writing a gzip file)*/
+         int     os;         /* operating system */
+         Bytef   *extra;     /* pointer to extra field or Z_NULL if none */
+         uInt    extra_len;  /* extra field length (valid if extra != Z_NULL) */
+         uInt    extra_max;  /* space at extra (only when reading header) */
+         Bytef   *name;      /* pointer to zero-terminated file name or Z_NULL*/
+         uInt    name_max;   /* space at name (only when reading header) */
+         Bytef   *comment;   /* pointer to zero-terminated comment or Z_NULL */
+         uInt    comm_max;   /* space at comment (only when reading header) */
+         int     hcrc;       /* true if there was or will be a header crc */
+         int     done;       /* true when done reading gzip header (not used
+                                when writing a gzip file) */
+     } gz_header;
+
+     typedef gz_header FAR *gz_headerp;
+
+     The application must update [4mnext_in[24m and [4mavail_in[24m when [4mavail_in[24m has
+     dropped to zero.  It must update [4mnext_out[24m and [4mavail_out[24m when [4mavail_out[0m
+     has dropped to zero.  The application must initialize [4mzalloc[24m, [4mzfree[24m, and
+     [4mopaque[24m before calling the init function.  All other fields are set by the
+     compression library and must not be updated by the application.
+
+     The [4mopaque[24m value provided by the application will be passed as the first
+     parameter for calls to [1mzalloc[22m() and [1mzfree[22m().  This can be useful for cus-
+     tom memory management.  The compression library attaches no meaning to
+     the [4mopaque[24m value.
+
+     [4mzalloc[24m must return Z_NULL if there is not enough memory for the object.
+     If [1mzlib [22mis used in a multi-threaded application, [4mzalloc[24m and [4mzfree[24m must be
+     thread safe.
+
+     On 16-bit systems, the functions [4mzalloc[24m and [4mzfree[24m must be able to allo-
+     cate exactly 65536 bytes, but will not be required to allocate more than
+     this if the symbol MAXSEG_64K is defined (see <[4mzconf.h[24m>).
+
+     WARNING: On MSDOS, pointers returned by [4mzalloc[24m for objects of exactly
+     65536 bytes *must* have their offset normalized to zero.  The default al-
+     location function provided by this library ensures this (see [4mzutil.c[24m).
+     To reduce memory requirements and avoid any allocation of 64K objects, at
+     the expense of compression ratio, compile the library with -DMAX_WBITS=14
+     (see <[4mzconf.h[24m>).
+
+     The fields [4mtotal_in[24m and [4mtotal_out[24m can be used for statistics or progress
+     reports.  After compression, [4mtotal_in[24m holds the total size of the uncom-
+     pressed data and may be saved for use in the decompressor (particularly
+     if the decompressor wants to decompress everything in a single step).
+
+[1mCONSTANTS[0m
+     #define Z_NO_FLUSH      0
+     #define Z_PARTIAL_FLUSH 1 /* will be removed, use Z_SYNC_FLUSH instead */
+     #define Z_SYNC_FLUSH    2
+     #define Z_FULL_FLUSH    3
+     #define Z_FINISH        4
+     #define Z_BLOCK          5
+     /* Allowed flush values; see deflate() and inflate() below for details */
+
+     #define Z_OK            0
+     #define Z_STREAM_END    1
+     #define Z_NEED_DICT     2
+     #define Z_ERRNO        (-1)
+     #define Z_STREAM_ERROR (-2)
+     #define Z_DATA_ERROR   (-3)
+     #define Z_MEM_ERROR    (-4)
+     #define Z_BUF_ERROR    (-5)
+     #define Z_VERSION_ERROR (-6)
+     /* Return codes for the compression/decompression functions.
+      * Negative values are errors,
+      * positive values are used for special but normal events.
+      */
+
+     #define Z_NO_COMPRESSION         0
+     #define Z_BEST_SPEED             1
+     #define Z_BEST_COMPRESSION       9
+     #define Z_DEFAULT_COMPRESSION  (-1)
+     /* compression levels */
+
+     #define Z_FILTERED            1
+     #define Z_HUFFMAN_ONLY        2
+     #define Z_RLE                 3
+     #define Z_FIXED               4
+     #define Z_DEFAULT_STRATEGY    0
+     /* compression strategy; see deflateInit2() below for details */
+
+     #define Z_BINARY   0
+     #define Z_TEXT     1
+     #define Z_ASCII    Z_TEXT /* for compatibility with 1.2.2 and earlier */
+     #define Z_UNKNOWN  2
+     /* Possible values of the data_type field (though see inflate()) */
+
+     #define Z_DEFLATED   8
+     /* The deflate compression method
+      * (the only one supported in this version)
+     */
+
+     #define Z_NULL  0  /* for initializing zalloc, zfree, opaque */
+
+     #define zlib_version zlibVersion()
+     /* for compatibility with versions < 1.0.2 */
+
+[1mVARIOUS HACKS[0m
+     deflateInit and inflateInit are macros to allow checking the [1mzlib [22mversion
+     and the compiler's view of [4mz_stream[24m.
+
+     [4mint[24m [1mdeflateInit_[22m([4mz_stream[24m [4mstrm[24m, [4mint[24m [4mlevel[24m, [4mconst[24m [4mchar[24m [4m*version[24m, [4mint[0m
+             [4mstream_size[24m);
+
+     [4mint[24m [1minflateInit_[22m([4mz_stream[24m [4mstrm[24m, [4mconst[24m [4mchar[24m [4m*version[24m, [4mint[24m [4mstream_size[24m);
+
+     [4mint[24m [1mdeflateInit2_[22m([4mz_stream[24m [4mstrm[24m, [4mint[24m [4mlevel[24m, [4mint[24m [4mmethod[24m, [4mint[24m [4mwindowBits[24m,
+             [4mint[24m [4mmemLevel[24m, [4mint[24m [4mstrategy[24m, [4mconst[24m [4mchar[24m [4m*version[24m, [4mint[24m [4mstream_size[24m)
+
+     [4mint[24m [1minflateInit2_[22m([4mz_stream[24m [4mstrm[24m, [4mint[24m [4mwindowBits[24m, [4mconst[24m [4mchar[24m [4m*version[24m, [4mint[0m
+             [4mstream_size[24m);
+
+     [4mint[24m [1minflateBackInit_[22m([4mz_stream[24m [4m*strm[24m, [4mint[24m [4mwindowBits[24m, [4munsigned[24m [4mchar[24m [4mFAR[0m
+             [4m*window[24m, [4mconst[24m [4mchar[24m [4m*version[24m, [4mint[24m [4mstream_size[24m)
+
+     [4mconst[24m [4mchar[24m [4m*[24m [1mzError[22m([4mint[24m [4merr[24m);
+
+     [4mint[24m [1minflateSyncPoint[22m([4mz_streamp[24m [4mz[24m);
+
+     [4mconst[24m [4muLongf[24m [4m*[24m [1mget_crc_table[22m([4mvoid[24m);
+
+[1mSEE ALSO[0m
+     compress(1), gzip(1)
+
+[1mSTANDARDS[0m
+     P. Deutsch and J-L. Gailly, [4mZLIB[24m [4mCompressed[24m [4mData[24m [4mFormat[24m [4mSpecification[0m
+     [4mversion[24m [4m3.3[24m, RFC 1950, May 1996.
+
+     P. Deutsch, [4mDEFLATE[24m [4mCompressed[24m [4mData[24m [4mFormat[24m [4mSpecification[24m [4mversion[24m [4m1.3[24m, RFC
+     1951, May 1996.
+
+     P. Deutsch, [4mGZIP[24m [4mfile[24m [4mformat[24m [4mspecification[24m [4mversion[24m [4m4.3[24m, RFC 1952, May
+     1996.
+
+[1mHISTORY[0m
+     This manual page is based on an HTML version of <[4mzlib.h[24m> converted by
+     piaip <[4mpiaip@csie.ntu.edu.tw[24m> and was converted to mdoc format by the
+     OpenBSD project.
+
+[1mAUTHORS[0m
+     Jean-loup Gailly <[4mjloup@gzip.org[24m>
+     Mark Adler <[4mmadler@alumni.caltech.edu[24m>
+
+BSD                             March 16, 2018                             BSD
