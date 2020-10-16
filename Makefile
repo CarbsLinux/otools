@@ -346,7 +346,7 @@ install:
 	for bin in ${BIN}; do \
 		cp $${bin} ${DESTDIR}${BINDIR}; \
 		chmod 755 ${DESTDIR}${BINDIR}/$${bin##*/}; done
-	chmod u+x ${DESTDIR}${BINDIR}/doas
+	chmod u+s ${DESTDIR}${BINDIR}/doas
 	for bin in ${MANDOCLINK}; do \
 		ln -s mandoc ${DESTDIR}${BINDIR}/$${bin}; done
 	for bin in ${MD5LINK}; do \
