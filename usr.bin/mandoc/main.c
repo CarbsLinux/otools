@@ -1185,6 +1185,9 @@ spawn_pager(struct tag_files *tag_files, char *tag_target)
 	char		*argv[MAX_PAGER_ARGS];
 	const char	*pager;
 	char		*cp;
+#ifdef HAVE_LESS_T
+	size_t		 cmdlen;
+#endif
 	int		 argc, use_ofn;
 	pid_t		 pager_pid;
 
@@ -1219,6 +1222,20 @@ spawn_pager(struct tag_files *tag_files, char *tag_target)
 	/* For more(1) and less(1), use the tag file. */
 
 	use_ofn = 1;
+#ifdef HAVE_LESS_T
+	if (*tag_files->tfn != '\0' && (cmdlen = strlen(argv[0])) >= 4) {
+		cp = argv[0] + cmdlen - 4;
+		if (strcmp(cp, "less") == 0 || strcmp(cp, "more") == 0) {
+			argv[argc++] = mandoc_strdup("-T");
+			argv[argc++] = tag_files->tfn;
+			if (tag_target != NULL) {
+				argv[argc++] = mandoc_strdup("-t");
+				argv[argc++] = tag_target;
+				use_ofn = 0;
+			}
+		}
+	}
+#endif
 	if (use_ofn)
 		argv[argc++] = tag_files->ofn;
 	argv[argc] = NULL;

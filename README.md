@@ -18,6 +18,7 @@ You can build software individually by calling 'make <program>', and the
 program will be built to the root directory of the source. The Makefile
 is bsdmake compatible.
 
+
 requirements
 ------------
 
@@ -26,6 +27,23 @@ config.mk to use the in-source zlib.
 
 In order to build 'nc', you need to have a libtls implementation. Carbs Linux
 uses libtls-bearssl by default.
+
+
+notes
+-----
+
+If you want the manpager to have tags support (doesn't work on busybox less),
+you will need to do the following:
+
+    echo CFLAGS += -DHAVE_LESS_T >> config.mk
+
+
+If you are unsure whether your less implementation includes tag support, run
+the following:
+
+    :> testfile
+    less -F -T testfile testfile && echo CFLAGS += -DHAVE_LESS_T >> config.mk
+    rm testfile
 
 
 patch directory

@@ -61,47 +61,6 @@ diff -upr a/usr.bin/mandoc/html.c b/usr.bin/mandoc/html.c
  #include <sys/types.h>
  #include <sys/stat.h>
  
-diff -upr a/usr.bin/mandoc/main.c b/usr.bin/mandoc/main.c
---- a/usr.bin/mandoc/main.c	2020-04-03 01:10:27.000000000 +0300
-+++ b/usr.bin/mandoc/main.c	2020-10-15 20:36:12.432111094 +0300
-@@ -405,8 +405,10 @@ main(int argc, char *argv[])
- 		}
- 		if (search.arch == NULL)
- 			search.arch = getenv("MACHINE");
-+#ifdef MACHINE
- 		if (search.arch == NULL)
- 			search.arch = MACHINE;
-+#endif
- 		if (outmode == OUTMODE_ONE)
- 			search.firstmatch = 1;
- 	}
-@@ -1183,7 +1185,6 @@ spawn_pager(struct tag_files *tag_files,
- 	char		*argv[MAX_PAGER_ARGS];
- 	const char	*pager;
- 	char		*cp;
--	size_t		 cmdlen;
- 	int		 argc, use_ofn;
- 	pid_t		 pager_pid;
- 
-@@ -1218,18 +1219,6 @@ spawn_pager(struct tag_files *tag_files,
- 	/* For more(1) and less(1), use the tag file. */
- 
- 	use_ofn = 1;
--	if (*tag_files->tfn != '\0' && (cmdlen = strlen(argv[0])) >= 4) {
--		cp = argv[0] + cmdlen - 4;
--		if (strcmp(cp, "less") == 0 || strcmp(cp, "more") == 0) {
--			argv[argc++] = mandoc_strdup("-T");
--			argv[argc++] = tag_files->tfn;
--			if (tag_target != NULL) {
--				argv[argc++] = mandoc_strdup("-t");
--				argv[argc++] = tag_target;
--				use_ofn = 0;
--			}
--		}
--	}
- 	if (use_ofn)
- 		argv[argc++] = tag_files->ofn;
- 	argv[argc] = NULL;
 diff -upr a/usr.bin/mandoc/mandoc_ohash.c b/usr.bin/mandoc/mandoc_ohash.c
 --- a/usr.bin/mandoc/mandoc_ohash.c	2015-10-19 21:58:20.000000000 +0300
 +++ b/usr.bin/mandoc/mandoc_ohash.c	2020-10-15 20:22:30.788037370 +0300
@@ -157,3 +116,43 @@ diff -upr a/usr.bin/mandoc/tag.c b/usr.bin/mandoc/tag.c
  #include <sys/types.h>
  
  #include <assert.h>
+diff -up a/usr.bin/mandoc/main.c b/usr.bin/mandoc/main.c
+--- a/usr.bin/mandoc/main.c	2020-04-03 01:10:27.000000000 +0300
++++ b/usr.bin/mandoc/main.c	2020-10-17 15:16:29.615721780 +0300
+@@ -405,8 +405,10 @@ main(int argc, char *argv[])
+ 		}
+ 		if (search.arch == NULL)
+ 			search.arch = getenv("MACHINE");
++#ifdef MACHINE
+ 		if (search.arch == NULL)
+ 			search.arch = MACHINE;
++#endif
+ 		if (outmode == OUTMODE_ONE)
+ 			search.firstmatch = 1;
+ 	}
+@@ -1183,7 +1185,9 @@ spawn_pager(struct tag_files *tag_files,
+ 	char		*argv[MAX_PAGER_ARGS];
+ 	const char	*pager;
+ 	char		*cp;
++#ifdef HAVE_LESS_T
+ 	size_t		 cmdlen;
++#endif
+ 	int		 argc, use_ofn;
+ 	pid_t		 pager_pid;
+ 
+@@ -1218,6 +1222,7 @@ spawn_pager(struct tag_files *tag_files,
+ 	/* For more(1) and less(1), use the tag file. */
+ 
+ 	use_ofn = 1;
++#ifdef HAVE_LESS_T
+ 	if (*tag_files->tfn != '\0' && (cmdlen = strlen(argv[0])) >= 4) {
+ 		cp = argv[0] + cmdlen - 4;
+ 		if (strcmp(cp, "less") == 0 || strcmp(cp, "more") == 0) {
+@@ -1230,6 +1235,7 @@ spawn_pager(struct tag_files *tag_files,
+ 			}
+ 		}
+ 	}
++#endif
+ 	if (use_ofn)
+ 		argv[argc++] = tag_files->ofn;
+ 	argv[argc] = NULL;
