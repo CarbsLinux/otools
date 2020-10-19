@@ -1,7 +1,7 @@
 otools
 ------
 
-Some OpenBSD userland utilities meant to be included in Carbs Linux base.
+Some OpenBSD-6.8 userland utilities meant to be included in Carbs Linux base.
 
 Currently includes the following software:
 - diff
