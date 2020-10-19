@@ -1,4 +1,4 @@
-/* $OpenBSD: main.c,v 1.251 2020/04/02 22:10:27 schwarze Exp $ */
+/* $OpenBSD: main.c,v 1.255 2020/07/21 15:08:48 schwarze Exp $ */
 /*
  * Copyright (c) 2010-2012, 2014-2020 Ingo Schwarze <schwarze@openbsd.org>
  * Copyright (c) 2008-2012 Kristaps Dzonsons <kristaps@bsd.lv>
@@ -107,8 +107,8 @@ static	void		  parse(struct mparse *, int, const char *,
 static	void		  passthrough(int, int);
 static	void		  process_onefile(struct mparse *, struct manpage *,
 				int, struct outstate *, struct manconf *);
-static	void		  run_pager(struct tag_files *, char *);
-static	pid_t		  spawn_pager(struct tag_files *, char *);
+static	void		  run_pager(struct outstate *, char *);
+static	pid_t		  spawn_pager(struct outstate *, char *);
 static	void		  usage(enum argmode) __attribute__((__noreturn__));
 static	int		  woptions(char *, enum mandoc_os *, int *);
 
@@ -152,7 +152,7 @@ main(int argc, char *argv[])
 	    strcmp(progname, BINM_MAKEWHATIS) == 0)
 		return mandocdb(argc, argv);
 
-	if (pledge("stdio rpath tmppath tty proc exec", NULL) == -1) {
+	if (pledge("stdio rpath wpath cpath tmppath tty proc exec", NULL) == -1) {
 		mandoc_msg(MANDOCERR_PLEDGE, 0, 0, "%s", strerror(errno));
 		return mandoc_msg_getrc();
 	}
@@ -355,7 +355,9 @@ main(int argc, char *argv[])
 
 	if (outmode == OUTMODE_FLN ||
 	    outmode == OUTMODE_LST ||
-	    !isatty(STDOUT_FILENO))
+	    (conf.output.outfilename == NULL &&
+	     conf.output.tagfilename == NULL &&
+	     isatty(STDOUT_FILENO) == 0))
 		outst.use_pager = 0;
 
 	if (outst.use_pager &&
@@ -368,12 +370,16 @@ main(int argc, char *argv[])
 			conf.output.indent = 3;
 	}
 
-	if (outst.use_pager == 0) {
-		if (pledge("stdio rpath", NULL) == -1) {
-			mandoc_msg(MANDOCERR_PLEDGE, 0, 0,
-			    "%s", strerror(errno));
-			return mandoc_msg_getrc();
-		}
+	if (outst.use_pager == 0)
+		c = pledge("stdio rpath", NULL);
+	else if (conf.output.outfilename != NULL ||
+	    conf.output.tagfilename != NULL)
+		c = pledge("stdio rpath wpath cpath", NULL);
+	else
+		c = pledge("stdio rpath tmppath tty proc exec", NULL);
+	if (c == -1) {
+		mandoc_msg(MANDOCERR_PLEDGE, 0, 0, "%s", strerror(errno));
+		return mandoc_msg_getrc();
 	}
 
 	/* Parse arguments. */
@@ -622,8 +628,10 @@ out:
 		manconf_free(&conf);
 
 	if (outst.tag_files != NULL) {
-		if (term_tag_close() != -1)
-			run_pager(outst.tag_files, conf.output.tag);
+		if (term_tag_close() != -1 &&
+		    conf.output.outfilename == NULL &&
+		    conf.output.tagfilename == NULL)
+			run_pager(&outst, conf.output.tag);
 		term_tag_unlink();
 	} else if (outst.had_output && outst.outtype != OUTT_LINT)
 		mandoc_msg_summary();
@@ -817,7 +825,15 @@ process_onefile(struct mparse *mp, struct manpage *resp, int startdir,
 
 	if (outst->use_pager) {
 		outst->use_pager = 0;
-		outst->tag_files = term_tag_init();
+		outst->tag_files = term_tag_init(conf->output.outfilename,
+		    conf->output.tagfilename);
+		if ((conf->output.outfilename != NULL ||
+		     conf->output.tagfilename != NULL) &&
+		    pledge("stdio rpath cpath", NULL) == -1) {
+			mandoc_msg(MANDOCERR_PLEDGE, 0, 0,
+			    "%s", strerror(errno));
+			exit(mandoc_msg_getrc());
+		}
 	}
 	if (outst->had_output && outst->outtype <= OUTT_UTF8) {
 		if (outst->outdata == NULL)
@@ -876,7 +892,7 @@ parse(struct mparse *mp, int fd, const char *file,
 	if (outst->outdata == NULL)
 		outdata_alloc(outst, outconf);
 	else if (outst->outtype == OUTT_HTML)
-		html_reset(outst);
+		html_reset(outst->outdata);
 
 	mandoc_xr_reset();
 	meta = mparse_result(mp);
@@ -1124,15 +1140,15 @@ woptions(char *arg, enum mandoc_os *os_e, int *wstop)
  * then fork the pager and wait for the user to close it.
  */
 static void
-run_pager(struct tag_files *tag_files, char *tag_target)
+run_pager(struct outstate *outst, char *tag_target)
 {
 	int	 signum, status;
 	pid_t	 man_pgid, tc_pgid;
 	pid_t	 pager_pid, wait_pid;
 
 	man_pgid = getpgid(0);
-	tag_files->tcpgid = man_pgid == getpid() ? getpgid(getppid()) :
-	    man_pgid;
+	outst->tag_files->tcpgid =
+	    man_pgid == getpid() ? getpgid(getppid()) : man_pgid;
 	pager_pid = 0;
 	signum = SIGSTOP;
 
@@ -1146,7 +1162,7 @@ run_pager(struct tag_files *tag_files, char *tag_target)
 				if (signum == SIGTTIN)
 					continue;
 			} else
-				tag_files->tcpgid = tc_pgid;
+				outst->tag_files->tcpgid = tc_pgid;
 			kill(0, signum);
 			continue;
 		}
@@ -1157,7 +1173,7 @@ run_pager(struct tag_files *tag_files, char *tag_target)
 			(void)tcsetpgrp(STDOUT_FILENO, pager_pid);
 			kill(pager_pid, SIGCONT);
 		} else
-			pager_pid = spawn_pager(tag_files, tag_target);
+			pager_pid = spawn_pager(outst, tag_target);
 
 		/* Wait for the pager to stop or exit. */
 
@@ -1178,7 +1194,7 @@ run_pager(struct tag_files *tag_files, char *tag_target)
 }
 
 static pid_t
-spawn_pager(struct tag_files *tag_files, char *tag_target)
+spawn_pager(struct outstate *outst, char *tag_target)
 {
 	const struct timespec timeout = { 0, 100000000 };  /* 0.1s */
 #define MAX_PAGER_ARGS 16
@@ -1191,14 +1207,14 @@ spawn_pager(struct tag_files *tag_files, char *tag_target)
 	int		 argc, use_ofn;
 	pid_t		 pager_pid;
 
-	assert(tag_files->ofd == -1);
-	assert(tag_files->tfs == NULL);
+	assert(outst->tag_files->ofd == -1);
+	assert(outst->tag_files->tfs == NULL);
 
 	pager = getenv("MANPAGER");
 	if (pager == NULL || *pager == '\0')
 		pager = getenv("PAGER");
 	if (pager == NULL || *pager == '\0')
-		pager = "more -s";
+		pager = "less";
 	cp = mandoc_strdup(pager);
 
 	/*
@@ -1223,11 +1239,12 @@ spawn_pager(struct tag_files *tag_files, char *tag_target)
 
 	use_ofn = 1;
 #ifdef HAVE_LESS_T
-	if (*tag_files->tfn != '\0' && (cmdlen = strlen(argv[0])) >= 4) {
+	if (*outst->tag_files->tfn != '\0' &&
+	    (cmdlen = strlen(argv[0])) >= 4) {
 		cp = argv[0] + cmdlen - 4;
 		if (strcmp(cp, "less") == 0 || strcmp(cp, "more") == 0) {
 			argv[argc++] = mandoc_strdup("-T");
-			argv[argc++] = tag_files->tfn;
+			argv[argc++] = outst->tag_files->tfn;
 			if (tag_target != NULL) {
 				argv[argc++] = mandoc_strdup("-t");
 				argv[argc++] = tag_target;
@@ -1236,8 +1253,14 @@ spawn_pager(struct tag_files *tag_files, char *tag_target)
 		}
 	}
 #endif
-	if (use_ofn)
-		argv[argc++] = tag_files->ofn;
+	if (use_ofn) {
+		if (outst->outtype == OUTT_HTML && tag_target != NULL)
+			mandoc_asprintf(&argv[argc], "file://%s#%s",
+			    outst->tag_files->ofn, tag_target);
+		else
+			argv[argc] = outst->tag_files->ofn;
+		argc++;
+	}
 	argv[argc] = NULL;
 
 	switch (pager_pid = fork()) {
@@ -1254,7 +1277,7 @@ spawn_pager(struct tag_files *tag_files, char *tag_target)
 			    "%s", strerror(errno));
 			exit(mandoc_msg_getrc());
 		}
-		tag_files->pager_pid = pager_pid;
+		outst->tag_files->pager_pid = pager_pid;
 		return pager_pid;
 	}
 

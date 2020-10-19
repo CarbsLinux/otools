@@ -1,4 +1,4 @@
-.\" $OpenBSD: mandoc.1,v 1.167 2020/04/24 11:58:02 schwarze Exp $
+.\" $OpenBSD: mandoc.1,v 1.173 2020/09/01 18:24:09 schwarze Exp $
 .\"
 .\" Copyright (c) 2012, 2014-2020 Ingo Schwarze <schwarze@openbsd.org>
 .\" Copyright (c) 2009, 2010, 2011 Kristaps Dzonsons <kristaps@bsd.lv>
@@ -15,7 +15,7 @@
 .\" ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 .\" OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 .\"
-.Dd $Mdocdate: April 24 2020 $
+.Dd $Mdocdate: September 1 2020 $
 .Dt MANDOC 1
 .Os
 .Sh NAME
@@ -52,13 +52,13 @@ The options are as follows:
 If the standard output is a terminal device and
 .Fl c
 is not specified, use
-.Xr more 1
+.Xr less 1
 to paginate the output, just like
 .Xr man 1
 would.
 .It Fl c
 Copy the formatted manual pages to the standard output without using
-.Xr more 1
+.Xr less 1
 to paginate them.
 This is the default.
 It can be specified to override
@@ -410,6 +410,30 @@ The file
 is used for an external style-sheet.
 This must be a valid absolute or
 relative URI.
+.It Cm tag Ns Op = Ns Ar term
+Same syntax and semantics as for
+.Sx ASCII Output .
+This is implemented by passing a
+.Ic file://
+URI ending in a fragment identifier to the pager
+rather than passing merely a file name.
+When using this argument, use a pager supporting such URIs, for example
+.Bd -literal -offset 3n
+MANPAGER='lynx -force_html' man -T html -O tag=MANPAGER man
+MANPAGER='w3m -T text/html' man -T html -O tag=toc mandoc
+.Ed
+.Pp
+Consequently, for HTML output, this argument does not work with
+.Xr more 1
+or
+.Xr less 1 .
+For example,
+.Ql MANPAGER=less man -T html -O tag=toc mandoc
+does not work because
+.Xr less 1
+does not support
+.Ic file://
+URIs.
 .It Cm toc
 If an input file contains at least two non-standard sections,
 print a table of contents near the beginning of the output.
@@ -451,10 +475,7 @@ code is not supported.
 .Pp
 If the input format of a file is
 .Xr man 7 ,
-the input is copied to the output, expanding any
-.Xr roff 7
-.Ic so
-requests.
+the input is copied to the output.
 The parser is also run, and as usual, the
 .Fl W
 level controls which
@@ -633,7 +654,7 @@ It never affects the interpretation of input files.
 Any non-empty value of the environment variable
 .Ev MANPAGER
 is used instead of the standard pagination program,
-.Xr more 1 ;
+.Xr less 1 ;
 see
 .Xr man 1
 for details.
@@ -647,8 +668,7 @@ Specifies the pagination program to use when
 .Ev MANPAGER
 is not defined.
 If neither PAGER nor MANPAGER is defined,
-.Xr more 1
-.Fl s
+.Xr less 1
 is used.
 Only used if
 .Fl a
@@ -1830,6 +1850,10 @@ The invalid character is discarded.
 A table layout specification contains an opening parenthesis,
 but no matching closing parenthesis.
 The rest of the input line, starting from the parenthesis, has no effect.
+.It Sy "ignoring excessive spacing in tbl layout"
+.Pq tbl
+A spacing modifier in a table layout is unreasonably large.
+The default spacing of 3n is used instead.
 .It Sy "tbl without any data cells"
 .Pq tbl
 A table does not contain any data cells.
