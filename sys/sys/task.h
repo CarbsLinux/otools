@@ -1,4 +1,4 @@
-/*	$OpenBSD: task.h,v 1.16 2019/06/23 12:56:10 kettenis Exp $ */
+/*	$OpenBSD: task.h,v 1.18 2020/08/01 08:40:20 anton Exp $ */
 
 /*
  * Copyright (c) 2013 David Gwynne <dlg@openbsd.org>
@@ -28,10 +28,12 @@ struct task {
 	void		(*t_func)(void *);
 	void		*t_arg;
 	unsigned int	t_flags;
+#if 1 /* NKCOV > 0 */
+	struct process	*t_process;
+#endif
 };
 
 #define TASK_ONQUEUE		1
-#define TASK_BARRIER		2
 
 TAILQ_HEAD(task_list, task);
 
