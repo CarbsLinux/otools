@@ -1,9 +1,13 @@
+D/arpa////
+D/protocols////
+D/rpc////
+D/rpcsvc////
 /Makefile/1.226/Thu Nov 14 21:14:53 2019//
 /a.out.h/1.3/Mon Jun  2 19:34:12 2003//
 /ar.h/1.3/Mon Jun  2 19:34:12 2003//
 /asr.h/1.2/Thu Oct 24 05:57:41 2019//
-/assert.h/1.13/Sun Jun 26 21:11:41 2011//
-/bitstring.h/1.5/Mon Jun  2 19:34:12 2003//
+/assert.h/1.15/Sun Sep  6 12:57:25 2020//
+/bitstring.h/1.6/Sun May 10 00:56:06 2020//
 /blf.h/1.7/Wed Mar 14 17:59:41 2007//
 /bsd_auth.h/1.11/Thu Mar  9 10:13:03 2017//
 /complex.h/1.5/Sun Mar 16 18:38:30 2014//
@@ -66,18 +70,18 @@
 /sha2.h/1.10/Sat Sep  3 17:00:29 2016//
 /signal.h/1.26/Wed May 30 13:20:38 2018//
 /siphash.h/1.3/Fri Feb 20 11:51:03 2015//
-/sndio.h/1.10/Wed Feb 26 13:53:58 2020//
+/sndio.h/1.13/Sun Jun 28 05:21:38 2020//
 /spawn.h/1.3/Wed May 20 22:50:07 2015//
 /stdbool.h/1.7/Fri Sep  4 23:47:09 2015//
 /stddef.h/1.14/Fri Jan  6 14:36:50 2017//
-/stdio.h/1.53/Fri Sep  9 18:12:37 2016//
+/stdio.h/1.54/Fri Sep 11 17:56:41 2020//
 /stdlib.h/1.76/Fri May 10 15:03:24 2019//
 /string.h/1.32/Tue Sep  5 03:16:13 2017//
 /strings.h/1.6/Sun Sep 10 21:50:36 2017//
 /sysexits.h/1.5/Mon Jun  2 19:34:12 2003//
 /tar.h/1.3/Thu Jun 26 05:42:04 2008//
 /tgmath.h/1.1/Fri Jul  8 19:28:06 2011//
-/tib.h/1.7/Fri May 10 13:29:21 2019//
+/tib.h/1.8/Tue Jul 14 16:48:13 2020//
 /time.h/1.31/Tue Oct 30 16:28:42 2018//
 /ttyent.h/1.4/Mon Jun  2 19:34:12 2003//
 /unistd.h/1.106/Fri Jul 13 09:25:22 2018//
@@ -87,7 +91,3 @@
 /vis.h/1.15/Mon Jul 20 01:52:27 2015//
 /wchar.h/1.31/Tue Sep  5 03:16:13 2017//
 /wctype.h/1.6/Tue Sep  5 03:16:13 2017//
-D/arpa////
-D/protocols////
-D/rpc////
-D/rpcsvc////
