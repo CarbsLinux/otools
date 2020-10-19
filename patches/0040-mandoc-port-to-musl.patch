@@ -1,8 +1,6 @@
-Apart from some definitions and includes, this patch also removes the LESS -T
-call so that other implementations of LESS (such as busybox) work as well.
-diff -upr a/usr.bin/mandoc/chars.c b/usr.bin/mandoc/chars.c
---- a/usr.bin/mandoc/chars.c	2020-02-13 19:16:03.000000000 +0300
-+++ b/usr.bin/mandoc/chars.c	2020-10-15 20:28:37.865510442 +0300
+diff -urp a/usr.bin/mandoc/chars.c b/usr.bin/mandoc/chars.c
+--- a/usr.bin/mandoc/chars.c	Thu Feb 13 19:16:03 2020
++++ b/usr.bin/mandoc/chars.c	Mon Oct 19 13:02:28 2020
 @@ -16,6 +16,7 @@
   * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
   * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
@@ -11,9 +9,9 @@ diff -upr a/usr.bin/mandoc/chars.c b/usr.bin/mandoc/chars.c
  #include <sys/types.h>
  
  #include <assert.h>
-diff -upr a/usr.bin/mandoc/dba.c b/usr.bin/mandoc/dba.c
---- a/usr.bin/mandoc/dba.c	2017-02-09 21:26:17.000000000 +0300
-+++ b/usr.bin/mandoc/dba.c	2020-10-15 20:14:07.403360262 +0300
+diff -urp a/usr.bin/mandoc/dba.c b/usr.bin/mandoc/dba.c
+--- a/usr.bin/mandoc/dba.c	Thu Feb  9 21:26:17 2017
++++ b/usr.bin/mandoc/dba.c	Mon Oct 19 13:02:28 2020
 @@ -17,6 +17,7 @@
   * Allocation-based version of the mandoc database, for read-write access.
   * The interface is defined in "dba.h".
@@ -22,9 +20,9 @@ diff -upr a/usr.bin/mandoc/dba.c b/usr.bin/mandoc/dba.c
  #include <sys/types.h>
  #include <endian.h>
  #include <errno.h>
-diff -upr a/usr.bin/mandoc/dbm.c b/usr.bin/mandoc/dbm.c
---- a/usr.bin/mandoc/dbm.c	2019-07-02 01:43:03.000000000 +0300
-+++ b/usr.bin/mandoc/dbm.c	2020-10-15 20:15:44.217488475 +0300
+diff -urp a/usr.bin/mandoc/dbm.c b/usr.bin/mandoc/dbm.c
+--- a/usr.bin/mandoc/dbm.c	Tue Jul  2 01:43:03 2019
++++ b/usr.bin/mandoc/dbm.c	Mon Oct 19 13:02:28 2020
 @@ -31,6 +31,10 @@
  #include "dbm_map.h"
  #include "dbm.h"
@@ -36,9 +34,9 @@ diff -upr a/usr.bin/mandoc/dbm.c b/usr.bin/mandoc/dbm.c
  struct macro {
  	int32_t	value;
  	int32_t	pages;
-diff -upr a/usr.bin/mandoc/dbm_map.c b/usr.bin/mandoc/dbm_map.c
---- a/usr.bin/mandoc/dbm_map.c	2017-02-09 21:26:17.000000000 +0300
-+++ b/usr.bin/mandoc/dbm_map.c	2020-10-15 20:16:40.740563806 +0300
+diff -urp a/usr.bin/mandoc/dbm_map.c b/usr.bin/mandoc/dbm_map.c
+--- a/usr.bin/mandoc/dbm_map.c	Thu Feb  9 21:26:17 2017
++++ b/usr.bin/mandoc/dbm_map.c	Mon Oct 19 13:02:28 2020
 @@ -36,6 +36,10 @@
  #include "dbm_map.h"
  #include "dbm.h"
@@ -50,9 +48,9 @@ diff -upr a/usr.bin/mandoc/dbm_map.c b/usr.bin/mandoc/dbm_map.c
  static struct stat	 st;
  static char		*dbm_base;
  static int		 ifd;
-diff -upr a/usr.bin/mandoc/html.c b/usr.bin/mandoc/html.c
---- a/usr.bin/mandoc/html.c	2020-04-20 15:59:24.000000000 +0300
-+++ b/usr.bin/mandoc/html.c	2020-10-15 20:31:07.733706743 +0300
+diff -urp a/usr.bin/mandoc/html.c b/usr.bin/mandoc/html.c
+--- a/usr.bin/mandoc/html.c	Mon Apr 20 15:59:24 2020
++++ b/usr.bin/mandoc/html.c	Mon Oct 19 13:02:28 2020
 @@ -18,6 +18,7 @@
   * Common functions for mandoc(1) HTML formatters.
   * For use by individual formatters and by the main program.
@@ -61,65 +59,10 @@ diff -upr a/usr.bin/mandoc/html.c b/usr.bin/mandoc/html.c
  #include <sys/types.h>
  #include <sys/stat.h>
  
-diff -upr a/usr.bin/mandoc/mandoc_ohash.c b/usr.bin/mandoc/mandoc_ohash.c
---- a/usr.bin/mandoc/mandoc_ohash.c	2015-10-19 21:58:20.000000000 +0300
-+++ b/usr.bin/mandoc/mandoc_ohash.c	2020-10-15 20:22:30.788037370 +0300
-@@ -14,6 +14,7 @@
-  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-  */
-+#include <sys/cdefs.h>
- #include <sys/types.h>
- #include <stddef.h>
- #include <stdint.h>
-diff -upr a/usr.bin/mandoc/mandoc_xr.c b/usr.bin/mandoc/mandoc_xr.c
---- a/usr.bin/mandoc/mandoc_xr.c	2017-07-03 00:17:12.000000000 +0300
-+++ b/usr.bin/mandoc/mandoc_xr.c	2020-10-15 20:22:48.871060409 +0300
-@@ -14,6 +14,7 @@
-  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-  */
-+#include <sys/cdefs.h>
- #include <sys/types.h>
- 
- #include <assert.h>
-diff -upr a/usr.bin/mandoc/mansearch.c b/usr.bin/mandoc/mansearch.c
---- a/usr.bin/mandoc/mansearch.c	2019-07-02 01:43:03.000000000 +0300
-+++ b/usr.bin/mandoc/mansearch.c	2020-10-15 20:23:05.476081586 +0300
-@@ -16,6 +16,7 @@
-  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-  */
- 
-+#include <sys/cdefs.h>
- #include <sys/mman.h>
- #include <sys/types.h>
- 
-diff -upr a/usr.bin/mandoc/roff.c b/usr.bin/mandoc/roff.c
---- a/usr.bin/mandoc/roff.c	2020-04-08 14:54:14.000000000 +0300
-+++ b/usr.bin/mandoc/roff.c	2020-10-15 20:23:23.988105223 +0300
-@@ -17,6 +17,7 @@
-  *
-  * Implementation of the roff(7) parser for mandoc(1).
-  */
-+#include <sys/cdefs.h>
- #include <sys/types.h>
- 
- #include <assert.h>
-diff -upr a/usr.bin/mandoc/tag.c b/usr.bin/mandoc/tag.c
---- a/usr.bin/mandoc/tag.c	2020-04-19 19:26:11.000000000 +0300
-+++ b/usr.bin/mandoc/tag.c	2020-10-15 20:23:39.327124832 +0300
-@@ -17,6 +17,7 @@
-  * Functions to tag syntax tree nodes.
-  * For internal use by mandoc(1) validation modules only.
-  */
-+#include <sys/cdefs.h>
- #include <sys/types.h>
- 
- #include <assert.h>
-diff -up a/usr.bin/mandoc/main.c b/usr.bin/mandoc/main.c
---- a/usr.bin/mandoc/main.c	2020-04-03 01:10:27.000000000 +0300
-+++ b/usr.bin/mandoc/main.c	2020-10-17 15:16:29.615721780 +0300
-@@ -405,8 +405,10 @@ main(int argc, char *argv[])
+diff -urp a/usr.bin/mandoc/main.c b/usr.bin/mandoc/main.c
+--- a/usr.bin/mandoc/main.c	Tue Jul 21 18:08:48 2020
++++ b/usr.bin/mandoc/main.c	Mon Oct 19 13:28:19 2020
+@@ -411,8 +411,10 @@ main(int argc, char *argv[])
  		}
  		if (search.arch == NULL)
  			search.arch = getenv("MACHINE");
@@ -130,7 +73,7 @@ diff -up a/usr.bin/mandoc/main.c b/usr.bin/mandoc/main.c
  		if (outmode == OUTMODE_ONE)
  			search.firstmatch = 1;
  	}
-@@ -1183,7 +1185,9 @@ spawn_pager(struct tag_files *tag_files,
+@@ -1199,7 +1201,9 @@ spawn_pager(struct outstate *outst, char *tag_target)
  	char		*argv[MAX_PAGER_ARGS];
  	const char	*pager;
  	char		*cp;
@@ -140,19 +83,74 @@ diff -up a/usr.bin/mandoc/main.c b/usr.bin/mandoc/main.c
  	int		 argc, use_ofn;
  	pid_t		 pager_pid;
  
-@@ -1218,6 +1222,7 @@ spawn_pager(struct tag_files *tag_files,
+@@ -1234,6 +1238,7 @@ spawn_pager(struct outstate *outst, char *tag_target)
  	/* For more(1) and less(1), use the tag file. */
  
  	use_ofn = 1;
 +#ifdef HAVE_LESS_T
- 	if (*tag_files->tfn != '\0' && (cmdlen = strlen(argv[0])) >= 4) {
+ 	if (*outst->tag_files->tfn != '\0' &&
+ 	    (cmdlen = strlen(argv[0])) >= 4) {
  		cp = argv[0] + cmdlen - 4;
- 		if (strcmp(cp, "less") == 0 || strcmp(cp, "more") == 0) {
-@@ -1230,6 +1235,7 @@ spawn_pager(struct tag_files *tag_files,
+@@ -1247,6 +1252,7 @@ spawn_pager(struct outstate *outst, char *tag_target)
  			}
  		}
  	}
 +#endif
- 	if (use_ofn)
- 		argv[argc++] = tag_files->ofn;
- 	argv[argc] = NULL;
+ 	if (use_ofn) {
+ 		if (outst->outtype == OUTT_HTML && tag_target != NULL)
+ 			mandoc_asprintf(&argv[argc], "file://%s#%s",
+diff -urp a/usr.bin/mandoc/mandoc_ohash.c b/usr.bin/mandoc/mandoc_ohash.c
+--- a/usr.bin/mandoc/mandoc_ohash.c	Mon Oct 19 21:58:20 2015
++++ b/usr.bin/mandoc/mandoc_ohash.c	Mon Oct 19 13:02:28 2020
+@@ -14,6 +14,7 @@
+  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
++#include <sys/cdefs.h>
+ #include <sys/types.h>
+ #include <stddef.h>
+ #include <stdint.h>
+diff -urp a/usr.bin/mandoc/mandoc_xr.c b/usr.bin/mandoc/mandoc_xr.c
+--- a/usr.bin/mandoc/mandoc_xr.c	Mon Jul  3 00:17:12 2017
++++ b/usr.bin/mandoc/mandoc_xr.c	Mon Oct 19 13:02:28 2020
+@@ -14,6 +14,7 @@
+  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
++#include <sys/cdefs.h>
+ #include <sys/types.h>
+ 
+ #include <assert.h>
+diff -urp a/usr.bin/mandoc/mansearch.c b/usr.bin/mandoc/mansearch.c
+--- a/usr.bin/mandoc/mansearch.c	Tue Jul  2 01:43:03 2019
++++ b/usr.bin/mandoc/mansearch.c	Mon Oct 19 13:02:28 2020
+@@ -16,6 +16,7 @@
+  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
+ 
++#include <sys/cdefs.h>
+ #include <sys/mman.h>
+ #include <sys/types.h>
+ 
+diff -urp a/usr.bin/mandoc/roff.c b/usr.bin/mandoc/roff.c
+--- a/usr.bin/mandoc/roff.c	Thu Aug 27 15:58:00 2020
++++ b/usr.bin/mandoc/roff.c	Mon Oct 19 13:02:28 2020
+@@ -17,6 +17,7 @@
+  *
+  * Implementation of the roff(7) parser for mandoc(1).
+  */
++#include <sys/cdefs.h>
+ #include <sys/types.h>
+ 
+ #include <assert.h>
+diff -urp a/usr.bin/mandoc/tag.c b/usr.bin/mandoc/tag.c
+--- a/usr.bin/mandoc/tag.c	Sun Apr 19 19:26:11 2020
++++ b/usr.bin/mandoc/tag.c	Mon Oct 19 13:02:28 2020
+@@ -17,6 +17,7 @@
+  * Functions to tag syntax tree nodes.
+  * For internal use by mandoc(1) validation modules only.
+  */
++#include <sys/cdefs.h>
+ #include <sys/types.h>
+ 
+ #include <assert.h>
