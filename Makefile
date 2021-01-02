@@ -44,8 +44,6 @@ LIBOBJ = \
 	 lib/libc/string/strmode.o \
 	 lib/libc/string/timingsafe_bcmp.o \
 	 lib/libc/string/timingsafe_memcmp.o \
-	 lib/libcrypto/sha/sha256.o \
-	 lib/libcrypto/sha/sha512.o \
 	 lib/libutil/bcrypt_pbkdf.o \
 	 lib/libutil/ohash.o \
 	 lib/libutil/pidfile.o
