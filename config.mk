@@ -2,11 +2,11 @@ PREFIX  = /usr/local
 BINDIR  = ${PREFIX}/bin
 MANPREFIX = ${PREFIX}/share/man
 
-AR      = ar
-CC      = cc
-RANLIB  = ranlib
-RM      = rm -f
-YACC    = yacc
+AR      ?= ar
+CC      ?= cc
+RANLIB  ?= ranlib
+RM      ?= rm -f
+YACC    ?= yacc
 
 
 # You can uncomment the latter if you aren't using libtls-bearssl. If you
@@ -18,12 +18,10 @@ TLSLIB = -ltls -lbearssl
 # in-source zlib.
 ZLIB      = -lz
 
-CFLAGS  = -Wall -Wno-pointer-sign -Wno-maybe-uninitialized \
+CFLAGS  += -Wall -Wno-pointer-sign -Wno-maybe-uninitialized \
 	  -Wno-attributes -I${PWD}/includedir \
 	  -D 'DEF_WEAK(n)=_Static_assert(1, "")' \
 	  -idirafter ${PWD}/include \
 	  -idirafter ${PWD}/sys \
 	  -idirafter ${PWD}/lib/libutil \
 	  -idirafter ${PWD}/lib/libcrypto
-
-LDFLAGS = -static
