@@ -1,6 +1,14 @@
-bin/ include/ lib/ sys/ usr.bin/ come from OpenBSD with the modifications from
-                                 patches folder.
-includedir/ patches/00[01-37]-*  come from OasisLinux
-includedir/sys/compat.h          taken from https://github.com/aperezdc/signify
+Makefile, and config.mk are on the public domain.
 
-The Makefile, config.mk and other patches are on the public domain.
+bin/, include/, lib/, sys/, usr.bin/ come from OpenBSD with the modifications
+from patches folder.
+
+includedir/, patches/00[01-37]-*  come from OasisLinux
+includedir/sys/compat.h           taken from https://github.com/aperezdc/signify
+
+Each patch written by me is distributed under the terms of the license of the
+upstream project to which it is applied.
+
+Similarly, any resulting binary artifacts produced using this build tool
+retain the original licensing from the upstream projects. I do not make any
+additional copyright claim to these artifacts.
