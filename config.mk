@@ -18,6 +18,10 @@ TLSLIB = -ltls -lbearssl
 # in-source zlib.
 ZLIB      = -lz
 
+# If fts is available on your system, we need to disable building it here.
+# Change with 1 if you are using musl-fts, 2 if you are using glibc.
+FTS=0
+
 CFLAGS  += -Wall -Wno-pointer-sign -Wno-maybe-uninitialized \
 	  -Wno-attributes -I${PWD}/includedir \
 	  -D 'DEF_WEAK(n)=_Static_assert(1, "")' \
@@ -25,3 +29,7 @@ CFLAGS  += -Wall -Wno-pointer-sign -Wno-maybe-uninitialized \
 	  -idirafter ${PWD}/sys \
 	  -idirafter ${PWD}/lib/libutil \
 	  -idirafter ${PWD}/lib/libcrypto
+
+# If you are using a less implementation with tags support, uncomment
+# the following.
+# CFLAGS += -DHAVE_LESS_T

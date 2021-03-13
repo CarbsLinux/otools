@@ -1,5 +1,5 @@
 otools
-------
+======
 
 Some OpenBSD-6.8 userland utilities meant to be included in Carbs Linux base.
 
@@ -14,36 +14,19 @@ Currently includes the following software:
 - pax
 - signify
 
-You can build software individually by calling 'make <program>', and the
-program will be built to the root directory of the source. The Makefile
-is bsdmake compatible.
+You can build software individually by calling `make <program>`, and the
+program will be built to the root directory of the source. The build system is
+configured through `config.mk`
 
 
 requirements
 ------------
 
-In order to build 'mandoc', you need to either have zlib installed, or edit
-config.mk to use the in-source zlib.
+In order to build `mandoc`, you need to either have zlib installed, or edit
+`config.mk` to use the in-source `zlib`.
 
-In order to build 'nc', you need to have a libtls implementation. Carbs Linux
-uses libtls-bearssl by default.
-
-
-notes
------
-
-If you want the manpager to have tags support (doesn't work on busybox less),
-you will need to do the following:
-
-    echo CFLAGS += -DHAVE_LESS_T >> config.mk
-
-
-If you are unsure whether your less implementation includes tag support, run
-the following:
-
-    :> testfile
-    less -F -T testfile testfile && echo CFLAGS += -DHAVE_LESS_T >> config.mk
-    rm testfile
+In order to build `nc`, you need to have a `libtls` implementation. Carbs Linux
+uses `libtls-bearssl` by default.
 
 
 patch directory

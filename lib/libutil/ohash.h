@@ -18,6 +18,10 @@
 #ifndef OHASH_H
 #define OHASH_H
 
+#ifdef HAVE_FTS
+  #include <sys/cdefs.h>
+#endif
+
 /* Open hashing support. 
  * Open hashing was chosen because it is much lighter than other hash
  * techniques, and more efficient in most cases.

@@ -15,7 +15,6 @@ LIBOBJ = \
 	 lib/libc/crypt/arc4random.o \
 	 lib/libc/crypt/arc4random_uniform.o \
 	 lib/libc/crypt/blowfish.o \
-	 lib/libc/gen/fts.o \
 	 lib/libc/gen/getprogname.o \
 	 lib/libc/gen/pwcache.o \
 	 lib/libc/gen/readpassphrase.o \
@@ -48,6 +47,14 @@ LIBOBJ = \
 	 lib/libutil/ohash.o \
 	 lib/libutil/pidfile.o
 
+ifeq (${FTS}, 0)
+LIBOBJ += lib/libc/gen/fts.o
+else
+CFLAGS += -DHAVE_FTS
+  ifeq (${FTS}, 1)
+  LIBFTS = -lfts
+  endif
+endif
 
 MAN = \
 	usr.bin/diff/diff.1 \
@@ -194,7 +201,7 @@ MANDOCOBJ = \
 	    usr.bin/mandoc/tree.o
 BINOBJ += ${MANDOCOBJ}
 mandoc: ${MANDOCOBJ} ${LIB}
-	${CC} ${LDFLAGS} -o $@ ${MANDOCOBJ} ${LIB} ${ZLIB}
+	${CC} ${LDFLAGS} -o $@ ${MANDOCOBJ} ${LIB} ${ZLIB} ${LIBFTS}
 
 # ------------------------------------------------------------------------------
 #  md5
@@ -239,7 +246,7 @@ PAXOBJ = \
 	 bin/pax/tty_subs.o
 BINOBJ += ${PAXOBJ}
 pax: ${PAXOBJ} ${LIB}
-	${CC} ${LDFLAGS} -o $@ ${PAXOBJ} ${LIB}
+	${CC} ${LDFLAGS} -o $@ ${PAXOBJ} ${LIB} ${LIBFTS}
 
 # ------------------------------------------------------------------------------
 # patch
