@@ -9,3 +9,4 @@
 /patch
 /pax
 /signify
+/lib/libc/hash/*hl.c
