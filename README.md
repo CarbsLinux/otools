@@ -28,10 +28,3 @@ In order to build `mandoc`, you need to either have zlib installed, or edit
 In order to build `nc`, you need to have a `libtls` implementation. Carbs Linux
 uses `libtls-bearssl` by default.
 
-
-patch directory
----------------
-
-The patch directory doesn't serve any function but to keep track of the applied
-patches under revision control. The sources here are already patched.
-
