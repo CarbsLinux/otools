@@ -7,6 +7,7 @@ Currently includes the following software:
 - diff
 - doas
 - ed
+- grep
 - m4
 - mandoc
 - md5

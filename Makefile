@@ -3,6 +3,7 @@ BIN    = \
 	 diff \
 	 doas \
 	 ed \
+	 grep \
 	 m4 \
 	 mandoc \
 	 md5 \
@@ -61,6 +62,7 @@ MAN = \
 	usr.bin/diff/diff.1 \
 	usr.bin/doas/doas.1 \
 	usr.bin/doas/doas.conf.5 \
+	usr.bin/grep/grep.1 \
 	usr.bin/mandoc/apropos.1 \
 	usr.bin/mandoc/makewhatis.8 \
 	usr.bin/mandoc/man.1 \
@@ -86,6 +88,13 @@ MAN = \
 
 all: ${BIN}
 ${BINOBJ}: ${LIB}
+
+MANDOCLIBS = ${LIB}
+GREPLIBS   = ${LIB}
+ifeq (${ZLIB}, lib/libz/libz.a)
+  MANDOCLIBS += ${ZLIB}
+  GREPLIBS += ${ZLIB}
+endif
 
 # ------------------------------------------------------------------------------
 # diff
@@ -131,6 +140,20 @@ bin/ed/sub.o: bin/ed/sub.c
 	${CC} ${CFLAGS} -c -o $@ $<
 ed: ${EDOBJ} ${LIB}
 	${CC} ${LDFLAGS} -o $@ ${EDOBJ} ${LIB}
+
+# ------------------------------------------------------------------------------
+# grep
+GREPOBJ = \
+	usr.bin/grep/binary.o \
+	usr.bin/grep/file.o \
+	usr.bin/grep/grep.o \
+	usr.bin/grep/mmfile.o \
+	usr.bin/grep/queue.o \
+	usr.bin/grep/util.o
+BINOBJ += ${GREPOBJ}
+
+grep: ${GREPOBJ} ${LIB}
+	${CC} ${LDFLAGS} -o $@ ${GREPOBJ} ${LIB} -lz
 
 # ------------------------------------------------------------------------------
 # m4
@@ -218,10 +241,6 @@ MANDOCOBJ = \
 	    usr.bin/mandoc/term_tag.o \
 	    usr.bin/mandoc/tree.o
 BINOBJ += ${MANDOCOBJ}
-MANDOCLIBS = ${LIB}
-ifeq (${ZLIB}, lib/libz/libz.a)
-  MANDOCLIBS += ${ZLIB}
-endif
 mandoc: ${MANDOCOBJ} ${MANDOCLIBS}
 	${CC} ${LDFLAGS} -o $@ ${MANDOCOBJ} ${LIB} ${ZLIB} ${LIBFTS}
 
