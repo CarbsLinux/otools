@@ -61,7 +61,6 @@ MAN = \
 	usr.bin/diff/diff.1 \
 	usr.bin/doas/doas.1 \
 	usr.bin/doas/doas.conf.5 \
-	bin/ed/ed.1
 	usr.bin/mandoc/apropos.1 \
 	usr.bin/mandoc/makewhatis.8 \
 	usr.bin/mandoc/man.1 \
@@ -70,6 +69,7 @@ MAN = \
 	usr.bin/m4/m4.1 \
 	usr.bin/nc/nc.1 \
 	usr.bin/patch/patch.1 \
+	bin/ed/ed.1 \
 	bin/md5/md5.1 \
 	bin/md5/cksum.1 \
 	bin/pax/cpio.1 \
