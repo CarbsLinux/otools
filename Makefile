@@ -2,6 +2,7 @@ include config.mk
 BIN    = \
 	 diff \
 	 doas \
+	 ed \
 	 m4 \
 	 mandoc \
 	 md5 \
@@ -60,6 +61,7 @@ MAN = \
 	usr.bin/diff/diff.1 \
 	usr.bin/doas/doas.1 \
 	usr.bin/doas/doas.conf.5 \
+	bin/ed/ed.1
 	usr.bin/mandoc/apropos.1 \
 	usr.bin/mandoc/makewhatis.8 \
 	usr.bin/mandoc/man.1 \
@@ -113,6 +115,22 @@ usr.bin/doas/env.o: usr.bin/doas/env.c
 doas: ${DOASOBJ} ${LIB}
 	${CC} ${LDFLAGS} -o $@ ${DOASOBJ} ${LIB}
 
+# ------------------------------------------------------------------------------
+# ed
+EDOBJ = \
+	bin/ed/buf.o \
+	bin/ed/glbl.o \
+	bin/ed/io.o \
+	bin/ed/main.o \
+	bin/ed/re.o \
+	bin/ed/sub.o \
+	bin/ed/undo.o
+
+BINOBJ += ${EDOBJ}
+bin/ed/sub.o: bin/ed/sub.c
+	${CC} ${CFLAGS} -c -o $@ $<
+ed: ${EDOBJ} ${LIB}
+	${CC} ${LDFLAGS} -o $@ ${EDOBJ} ${LIB}
 
 # ------------------------------------------------------------------------------
 # m4
