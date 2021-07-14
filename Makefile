@@ -200,7 +200,11 @@ MANDOCOBJ = \
 	    usr.bin/mandoc/term_tag.o \
 	    usr.bin/mandoc/tree.o
 BINOBJ += ${MANDOCOBJ}
-mandoc: ${MANDOCOBJ} ${LIB}
+MANDOCLIBS = ${LIB}
+ifeq (${ZLIB}, lib/libz/libz.a)
+  MANDOCLIBS += ${ZLIB}
+endif
+mandoc: ${MANDOCOBJ} ${MANDOCLIBS}
 	${CC} ${LDFLAGS} -o $@ ${MANDOCOBJ} ${LIB} ${ZLIB} ${LIBFTS}
 
 # ------------------------------------------------------------------------------
@@ -314,7 +318,10 @@ LIBZOBJ = \
 	  lib/libz/compress.o \
 	  lib/libz/crc32.o \
 	  lib/libz/deflate.o \
-	  lib/libz/gzio.o \
+	  lib/libz/gzclose.o \
+	  lib/libz/gzlib.o \
+	  lib/libz/gzread.o \
+	  lib/libz/gzwrite.o \
 	  lib/libz/infback.o \
 	  lib/libz/inffast.o \
 	  lib/libz/inflate.o \
