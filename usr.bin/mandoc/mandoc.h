@@ -1,6 +1,6 @@
-/* $OpenBSD: mandoc.h,v 1.211 2020/09/01 18:24:09 schwarze Exp $ */
+/* $OpenBSD: mandoc.h,v 1.214 2021/07/04 15:38:08 schwarze Exp $ */
 /*
- * Copyright (c) 2012-2020 Ingo Schwarze <schwarze@openbsd.org>
+ * Copyright (c) 2012-2021 Ingo Schwarze <schwarze@openbsd.org>
  * Copyright (c) 2010, 2011, 2014 Kristaps Dzonsons <kristaps@bsd.lv>
  *
  * Permission to use, copy, modify, and distribute this software for any
@@ -54,7 +54,6 @@ enum	mandocerr {
 	MANDOCERR_ARCH_BAD,  /* unknown architecture: Dt ... arch */
 	MANDOCERR_OS_ARG,  /* operating system explicitly specified: Os ... */
 	MANDOCERR_RCS_MISSING, /* RCS id missing */
-	MANDOCERR_XR_BAD,  /* referenced manual not found: Xr name sec */
 
 	MANDOCERR_STYLE, /* ===== start of style suggestions ===== */
 
@@ -68,10 +67,12 @@ enum	mandocerr {
 	MANDOCERR_BX, /* consider using OS macro: macro */
 	MANDOCERR_ER_ORDER, /* errnos out of order: Er ... */
 	MANDOCERR_ER_REP, /* duplicate errno: Er ... */
+	MANDOCERR_XR_BAD,  /* referenced manual not found: Xr name sec */
 	MANDOCERR_DELIM, /* trailing delimiter: macro ... */
 	MANDOCERR_DELIM_NB, /* no blank before trailing delimiter: macro ... */
 	MANDOCERR_FI_SKIP, /* fill mode already enabled, skipping: fi */
 	MANDOCERR_NF_SKIP, /* fill mode already disabled, skipping: nf */
+	MANDOCERR_TEXT_LONG, /* input text line longer than 80 bytes */
 	MANDOCERR_DASHDASH, /* verbatim "--", maybe consider using \(em */
 	MANDOCERR_FUNC, /* function name without markup: name() */
 	MANDOCERR_SPACE_EOL, /* whitespace at end of input line */
@@ -244,6 +245,8 @@ enum	mandocerr {
 	MANDOCERR_TBLOPT_EQN, /* eqn delim option in tbl: arg */
 	MANDOCERR_TBLLAYOUT_MOD, /* unsupported tbl layout modifier: m */
 	MANDOCERR_TBLMACRO, /* ignoring macro in table: macro */
+	MANDOCERR_TBL_TMAN, /* skipping tbl in -Tman mode */
+	MANDOCERR_EQN_TMAN, /* skipping eqn in -Tman mode */
 
 	MANDOCERR_BADARG, /* ===== start of bad invocations ===== */
 

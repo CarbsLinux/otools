@@ -715,7 +715,7 @@ mod_name(ARCHD *arcn)
 		if ((res = rep_name(arcn->name, sizeof(arcn->name), &(arcn->nlen), 1)) != 0)
 			return(res);
 
-		if (PAX_IS_LINK(arcn->type)) {
+		if (PAX_IS_HARDLINK(arcn->type)) {
 			if ((res = rep_name(arcn->ln_name,
 			    sizeof(arcn->ln_name), &(arcn->ln_nlen), 0)) != 0)
 				return(res);
@@ -728,7 +728,7 @@ mod_name(ARCHD *arcn)
 		 */
 		if ((res = tty_rename(arcn)) != 0)
 			return(res);
-		if (PAX_IS_LINK(arcn->type))
+		if (PAX_IS_HARDLINK(arcn->type))
 			sub_name(arcn->ln_name, &(arcn->ln_nlen),
 			    sizeof(arcn->ln_name));
 	}

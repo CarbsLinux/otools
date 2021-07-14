@@ -1,6 +1,6 @@
-/* $OpenBSD: mandoc_msg.c,v 1.10 2020/09/01 18:24:10 schwarze Exp $ */
+/* $OpenBSD: mandoc_msg.c,v 1.13 2021/07/04 15:38:09 schwarze Exp $ */
 /*
- * Copyright (c) 2014-2020 Ingo Schwarze <schwarze@openbsd.org>
+ * Copyright (c) 2014-2021 Ingo Schwarze <schwarze@openbsd.org>
  * Copyright (c) 2010, 2011 Kristaps Dzonsons <kristaps@bsd.lv>
  *
  * Permission to use, copy, modify, and distribute this software for any
@@ -53,7 +53,6 @@ static	const char *const type_message[MANDOCERR_MAX] = {
 	"unknown architecture",
 	"operating system explicitly specified",
 	"RCS id missing",
-	"referenced manual not found",
 
 	"generic style suggestion",
 
@@ -67,10 +66,12 @@ static	const char *const type_message[MANDOCERR_MAX] = {
 	"consider using OS macro",
 	"errnos out of order",
 	"duplicate errno",
+	"referenced manual not found",
 	"trailing delimiter",
 	"no blank before trailing delimiter",
 	"fill mode already enabled, skipping",
 	"fill mode already disabled, skipping",
+	"input text line longer than 80 bytes",
 	"verbatim \"--\", maybe consider using \\(em",
 	"function name without markup",
 	"whitespace at end of input line",
@@ -242,6 +243,8 @@ static	const char *const type_message[MANDOCERR_MAX] = {
 	"eqn delim option in tbl",
 	"unsupported tbl layout modifier",
 	"ignoring macro in table",
+	"skipping tbl in -Tman mode",
+	"skipping eqn in -Tman mode",
 
 	/* bad command line arguments */
 	NULL,

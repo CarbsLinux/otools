@@ -1,4 +1,4 @@
-/*	$OpenBSD: backupfile.c,v 1.21 2013/11/26 13:19:07 deraadt Exp $	*/
+/*	$OpenBSD: backupfile.c,v 1.22 2020/10/12 13:58:27 naddy Exp $	*/
 
 /*
  * backupfile.c -- make Emacs style backup file names Copyright (C) 1990 Free
@@ -53,22 +53,32 @@ static void	invalid_arg(const char *, const char *, int);
 char *
 find_backup_file_name(const char *file)
 {
-	char	*path, *base_versions;
+	char	*dir, *base_versions, *tmp_file;
 	int	highest_backup;
 
 	if (backup_type == simple)
 		return concat(file, simple_backup_suffix);
-	path = strdup(file);
-	if (path == NULL)
+	tmp_file = strdup(file);
+	if (tmp_file == NULL)
 		return NULL;
-	base_versions = concat(basename(path), ".~");
-	if (base_versions == NULL) {
-		free(path);
+	base_versions = concat(basename(tmp_file), ".~");
+	free(tmp_file);
+	if (base_versions == NULL)
+		return NULL;
+	tmp_file = strdup(file);
+	if (tmp_file == NULL) {
+		free(base_versions);
 		return NULL;
 	}
-	highest_backup = max_backup_version(base_versions, dirname(path));
+	dir = dirname(tmp_file);
+	if (dir == NULL) {
+		free(base_versions);
+		free(tmp_file);
+		return NULL;
+	}
+	highest_backup = max_backup_version(base_versions, dir);
 	free(base_versions);
-	free(path);
+	free(tmp_file);
 	if (backup_type == numbered_existing && highest_backup == 0)
 		return concat(file, simple_backup_suffix);
 	return make_version_name(file, highest_backup + 1);

@@ -5,7 +5,7 @@
 #define YYBYACC 1
 #define YYMAJOR 2
 #define YYMINOR 0
-#define YYPATCH 20200910
+#define YYPATCH 20210619
 
 #define YYEMPTY        (-1)
 #define yyclearin      (yychar = YYEMPTY)
@@ -50,8 +50,8 @@ typedef struct {
 FILE *yyfp;
 
 struct rule **rules;
-int nrules;
-static int maxrules;
+size_t nrules;
+static size_t maxrules;
 
 int parse_errors = 0;
 
@@ -119,48 +119,52 @@ extern int YYPARSE_DECL();
 #define TCMD 260
 #define TARGS 261
 #define TNOPASS 262
-#define TPERSIST 263
-#define TKEEPENV 264
-#define TSETENV 265
-#define TSTRING 266
+#define TNOLOG 263
+#define TPERSIST 264
+#define TKEEPENV 265
+#define TSETENV 266
+#define TSTRING 267
 #define YYERRCODE 256
-typedef short YYINT;
+typedef int YYINT;
 static const YYINT yylhs[] = {                           -1,
     0,    0,    0,    0,    1,    2,    2,    6,    6,    7,
-    7,    7,    7,    8,    8,    3,    4,    4,    5,    5,
-    9,    9,
+    7,    7,    7,    7,    8,    8,    3,    4,    4,    5,
+    5,    9,    9,
 };
 static const YYINT yylen[] = {                            2,
     0,    2,    3,    2,    4,    2,    1,    0,    2,    1,
-    1,    1,    4,    0,    2,    1,    0,    2,    0,    3,
-    0,    2,
+    1,    1,    1,    4,    0,    2,    1,    0,    2,    0,
+    3,    0,    2,
 };
 static const YYINT yydefred[] = {                         0,
     0,    0,    4,    8,    7,    2,    0,    0,    0,    3,
-   16,    0,   10,   11,   12,    0,    9,    0,    0,   14,
-   18,    0,    5,    0,    0,   15,   13,   14,   20,    0,
+   17,    0,   10,   11,   12,   13,    0,    9,    0,    0,
+   15,   19,    0,    5,    0,    0,   16,   14,   15,   21,
+    0,
 };
 static const YYINT yydgoto[] = {                          2,
-    7,    8,   12,   19,   23,    9,   17,   24,   29,
+    7,    8,   12,   20,   24,    9,   18,   25,   30,
 };
 static const YYINT yysindex[] = {                      -253,
-   -1,   -6,    0,    0,    0,    0,    2, -256, -257,    0,
-    0, -246,    0,    0,    0, -109,    0, -251, -244,    0,
-    0, -249,    0, -123, -243,    0,    0,    0,    0, -247,
+    2,   -6,    0,    0,    0,    0,    3, -252, -257,    0,
+    0, -249,    0,    0,    0,    0, -109,    0, -251, -243,
+    0,    0, -248,    0, -123, -241,    0,    0,    0,    0,
+ -246,
 };
 static const YYINT yyrindex[] = {                         1,
     0,    0,    0,    0,    0,    0,    0,    0, -245,    0,
-    0,  -10,    0,    0,    0,    0,    0,    0,   10,    0,
-    0,    0,    0,    0,   12,    0,    0,    0,    0,   13,
+    0,  -10,    0,    0,    0,    0,    0,    0,    0,    8,
+    0,    0,    0,    0,    0,   13,    0,    0,    0,    0,
+   14,
 };
 static const YYINT yygindex[] = {                         0,
     0,    0,    0,    0,    0,    0,    0,   -4,    0,
 };
 #define YYTABLESIZE 259
-static const YYINT yytable[] = {                         17,
-    1,   27,    1,    6,   13,   14,   15,   16,    3,   11,
-    1,   10,   18,   20,   21,   22,   25,   28,   26,   19,
-    6,   21,   22,   30,    0,    0,    0,    0,    0,    0,
+static const YYINT yytable[] = {                         18,
+    1,   28,    1,    6,   13,   14,   15,   16,   17,   19,
+    1,    3,   10,   21,   11,   22,   23,   20,   26,   29,
+   27,    6,   22,   23,   31,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
@@ -172,7 +176,7 @@ static const YYINT yytable[] = {                         17,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,   26,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,   27,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
@@ -182,13 +186,13 @@ static const YYINT yytable[] = {                         17,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,    0,    0,    0,    0,   17,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,   18,
     4,    5,    0,    0,    0,    0,    0,    1,    1,
 };
 static const YYINT yycheck[] = {                         10,
-    0,  125,  256,   10,  262,  263,  264,  265,   10,  266,
-   10,   10,  259,  123,  266,  260,  266,  261,  266,   10,
-  266,   10,   10,   28,   -1,   -1,   -1,   -1,   -1,   -1,
+    0,  125,  256,   10,  262,  263,  264,  265,  266,  259,
+   10,   10,   10,  123,  267,  267,  260,   10,  267,  261,
+  267,  267,   10,   10,   29,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
@@ -200,7 +204,7 @@ static const YYINT yycheck[] = {                         10,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
-   -1,   -1,  266,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   -1,   -1,   -1,  267,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
@@ -217,8 +221,8 @@ static const YYINT yycheck[] = {                         10,
 #ifndef YYDEBUG
 #define YYDEBUG 0
 #endif
-#define YYMAXTOKEN 266
-#define YYUNDFTOKEN 278
+#define YYMAXTOKEN 267
+#define YYUNDFTOKEN 279
 #define YYTRANSLATE(a) ((a) > YYMAXTOKEN ? YYUNDFTOKEN : (a))
 #if YYDEBUG
 static const char *const yyname[] = {
@@ -230,8 +234,8 @@ static const char *const yyname[] = {
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"TPERMIT","TDENY",
-"TAS","TCMD","TARGS","TNOPASS","TPERSIST","TKEEPENV","TSETENV","TSTRING",0,0,0,
-0,0,0,0,0,0,0,0,"illegal-symbol",
+"TAS","TCMD","TARGS","TNOPASS","TNOLOG","TPERSIST","TKEEPENV","TSETENV",
+"TSTRING",0,0,0,0,0,0,0,0,0,0,0,"illegal-symbol",
 };
 static const char *const yyrule[] = {
 "$accept : grammar",
@@ -245,6 +249,7 @@ static const char *const yyrule[] = {
 "options :",
 "options : options option",
 "option : TNOPASS",
+"option : TNOLOG",
 "option : TPERSIST",
 "option : TKEEPENV",
 "option : TSETENV '{' strlist '}'",
@@ -296,7 +301,7 @@ typedef struct {
 } YYSTACKDATA;
 /* variables for the parser stack */
 static YYSTACKDATA yystack;
-#line 189 "usr.bin/doas/parse.y"
+#line 192 "usr.bin/doas/parse.y"
 
 void
 yyerror(const char *fmt, ...)
@@ -321,6 +326,7 @@ static struct keyword {
 	{ "cmd", TCMD },
 	{ "args", TARGS },
 	{ "nopass", TNOPASS },
+	{ "nolog", TNOLOG },
 	{ "persist", TPERSIST },
 	{ "keepenv", TKEEPENV },
 	{ "setenv", TSETENV },
@@ -330,7 +336,8 @@ int
 yylex(void)
 {
 	char buf[1024], *ebuf, *p, *str;
-	int i, c, quotes = 0, escape = 0, qpos = -1, nonkw = 0;
+	int c, quotes = 0, escape = 0, qpos = -1, nonkw = 0;
+	size_t i;
 
 	p = buf;
 	ebuf = buf + sizeof(buf);
@@ -452,7 +459,7 @@ eof:
 		yyerror("input error reading config");
 	return 0;
 }
-#line 456 "usr.bin/doas/parse.c"
+#line 463 "usr.bin/doas/parse.c"
 
 #if YYDEBUG
 #include <stdio.h>	/* needed for printf */
@@ -527,12 +534,12 @@ YYPARSE_DECL()
     }
 #endif
 
-    yym = 0;
-    yyn = 0;
+    /* yym is set below */
+    /* yyn is set below */
     yynerrs = 0;
     yyerrflag = 0;
     yychar = YYEMPTY;
-    yystate = 0;
+    /* yystate is set below */
 
 #if YYPURE
     memset(&yystack, 0, sizeof(yystack));
@@ -667,12 +674,12 @@ case 5:
 			r->cmdargs = yystack.l_mark[0].cmdargs;
 			if (nrules == maxrules) {
 				if (maxrules == 0)
-					maxrules = 63;
-				else
-					maxrules *= 2;
-				if (!(rules = reallocarray(rules, maxrules,
-				    sizeof(*rules))))
+					maxrules = 32;
+				rules = reallocarray(rules, maxrules,
+				    2 * sizeof(*rules));
+				if (!rules)
 					errx(1, "can't allocate rules");
+				maxrules *= 2;
 			}
 			rules[nrules++] = r;
 		}
@@ -728,33 +735,40 @@ break;
 case 11:
 #line 140 "usr.bin/doas/parse.y"
 	{
-			yyval.options = PERSIST;
+			yyval.options = NOLOG;
 			yyval.envlist = NULL;
 		}
 break;
 case 12:
 #line 143 "usr.bin/doas/parse.y"
 	{
-			yyval.options = KEEPENV;
+			yyval.options = PERSIST;
 			yyval.envlist = NULL;
 		}
 break;
 case 13:
 #line 146 "usr.bin/doas/parse.y"
 	{
+			yyval.options = KEEPENV;
+			yyval.envlist = NULL;
+		}
+break;
+case 14:
+#line 149 "usr.bin/doas/parse.y"
+	{
 			yyval.options = 0;
 			yyval.envlist = yystack.l_mark[-1].strlist;
 		}
 break;
-case 14:
-#line 151 "usr.bin/doas/parse.y"
+case 15:
+#line 154 "usr.bin/doas/parse.y"
 	{
 			if (!(yyval.strlist = calloc(1, sizeof(char *))))
 				errx(1, "can't allocate strlist");
 		}
 break;
-case 15:
-#line 154 "usr.bin/doas/parse.y"
+case 16:
+#line 157 "usr.bin/doas/parse.y"
 	{
 			int nstr = arraylen(yystack.l_mark[-1].strlist);
 			if (!(yyval.strlist = reallocarray(yystack.l_mark[-1].strlist, nstr + 2,
@@ -764,51 +778,51 @@ case 15:
 			yyval.strlist[nstr + 1] = NULL;
 		}
 break;
-case 16:
-#line 164 "usr.bin/doas/parse.y"
+case 17:
+#line 167 "usr.bin/doas/parse.y"
 	{
 			yyval.str = yystack.l_mark[0].str;
 		}
 break;
-case 17:
-#line 168 "usr.bin/doas/parse.y"
+case 18:
+#line 171 "usr.bin/doas/parse.y"
 	{
 			yyval.str = NULL;
 		}
 break;
-case 18:
-#line 170 "usr.bin/doas/parse.y"
+case 19:
+#line 173 "usr.bin/doas/parse.y"
 	{
 			yyval.str = yystack.l_mark[0].str;
-		}
-break;
-case 19:
-#line 174 "usr.bin/doas/parse.y"
-	{
-			yyval.cmd = NULL;
-			yyval.cmdargs = NULL;
 		}
 break;
 case 20:
 #line 177 "usr.bin/doas/parse.y"
 	{
+			yyval.cmd = NULL;
+			yyval.cmdargs = NULL;
+		}
+break;
+case 21:
+#line 180 "usr.bin/doas/parse.y"
+	{
 			yyval.cmd = yystack.l_mark[-1].str;
 			yyval.cmdargs = yystack.l_mark[0].cmdargs;
 		}
 break;
-case 21:
-#line 182 "usr.bin/doas/parse.y"
+case 22:
+#line 185 "usr.bin/doas/parse.y"
 	{
 			yyval.cmdargs = NULL;
 		}
 break;
-case 22:
-#line 184 "usr.bin/doas/parse.y"
+case 23:
+#line 187 "usr.bin/doas/parse.y"
 	{
 			yyval.cmdargs = yystack.l_mark[0].strlist;
 		}
 break;
-#line 812 "usr.bin/doas/parse.c"
+#line 826 "usr.bin/doas/parse.c"
     }
     yystack.s_mark -= yym;
     yystate = *yystack.s_mark;

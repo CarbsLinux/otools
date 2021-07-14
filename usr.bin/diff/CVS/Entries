@@ -1,9 +1,9 @@
-/Makefile/1.3/Tue May 29 18:24:56 2007//
-/diff.1/1.49/Sat Feb  8 01:09:58 2020//
 /diff.c/1.67/Fri Jun 28 13:35:00 2019//
-/diff.h/1.33/Mon Oct  5 20:15:00 2015//
-/diffdir.c/1.47/Fri Jan 25 00:19:26 2019//
 /diffreg.c/1.93/Fri Jun 28 13:35:00 2019//
-/xmalloc.c/1.10/Fri Jun 28 05:44:09 2019//
-/xmalloc.h/1.4/Thu Nov 12 16:30:30 2015//
+/Makefile/1.3/Mon Oct 19 10:36:43 2020//
+/diff.1/1.50/Wed Jul 14 10:52:37 2021//
+/diff.h/1.34/Wed Jul 14 10:52:37 2021//
+/diffdir.c/1.47/Mon Oct 19 10:36:43 2020//
+/xmalloc.c/1.10/Mon Oct 19 10:36:43 2020//
+/xmalloc.h/1.4/Mon Oct 19 10:36:43 2020//
 D

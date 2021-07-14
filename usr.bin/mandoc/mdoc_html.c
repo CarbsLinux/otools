@@ -1,6 +1,6 @@
-/* $OpenBSD: mdoc_html.c,v 1.215 2020/04/19 15:15:54 schwarze Exp $ */
+/* $OpenBSD: mdoc_html.c,v 1.217 2021/03/30 19:23:50 schwarze Exp $ */
 /*
- * Copyright (c) 2014-2020 Ingo Schwarze <schwarze@openbsd.org>
+ * Copyright (c) 2014-2021 Ingo Schwarze <schwarze@openbsd.org>
  * Copyright (c) 2008-2011, 2014 Kristaps Dzonsons <kristaps@bsd.lv>
  *
  * Permission to use, copy, modify, and distribute this software for any
@@ -347,12 +347,11 @@ print_mdoc_node(MDOC_ARGS)
 	if (n->type == ROFFT_COMMENT || n->flags & NODE_NOPRT)
 		return;
 
-	if (n->flags & NODE_NOFILL) {
-		html_fillmode(h, ROFF_nf);
-		if (n->flags & NODE_LINE)
-			print_endline(h);
-	} else
+	if ((n->flags & NODE_NOFILL) == 0)
 		html_fillmode(h, ROFF_fi);
+	else if (html_fillmode(h, ROFF_nf) == ROFF_nf &&
+	    n->tok != ROFF_fi && n->flags & NODE_LINE)
+		print_endline(h);
 
 	child = 1;
 	n->flags &= ~NODE_ENDED;
@@ -929,7 +928,7 @@ mdoc_sx_pre(MDOC_ARGS)
 static int
 mdoc_bd_pre(MDOC_ARGS)
 {
-	char			 buf[16];
+	char			 buf[20];
 	struct roff_node	*nn;
 	int			 comp;
 
@@ -965,6 +964,9 @@ mdoc_bd_pre(MDOC_ARGS)
 	if (n->norm->Bd.offs != NULL &&
 	    strcmp(n->norm->Bd.offs, "left") != 0)
 		(void)strlcat(buf, " Bd-indent", sizeof(buf));
+
+	if (n->norm->Bd.type == DISP_literal)
+		(void)strlcat(buf, " Li", sizeof(buf));
 
 	print_otag_id(h, TAG_DIV, buf, n);
 	return 1;

@@ -1,16 +1,16 @@
-/Makefile/1.5/Fri Oct 16 07:33:47 2015//
-/backupfile.c/1.21/Tue Nov 26 13:19:07 2013//
-/backupfile.h/1.6/Mon Jul 28 18:35:36 2003//
-/common.h/1.30/Mon Dec  2 22:17:32 2019//
-/ed.c/1.4/Mon Dec  2 22:17:32 2019//
-/ed.h/1.1/Fri Oct 16 07:33:47 2015//
-/inp.c/1.49/Fri Jun 28 13:35:02 2019//
-/inp.h/1.8/Fri Aug 15 08:00:51 2003//
-/mkpath.c/1.4/Tue May 20 01:25:23 2014//
-/patch.1/1.32/Fri Jun 22 15:37:15 2018//
 /patch.c/1.69/Mon Dec  2 22:17:32 2019//
-/pch.c/1.62/Mon Dec  2 22:23:19 2019//
-/pch.h/1.13/Wed Dec 11 20:10:17 2019//
-/util.c/1.45/Mon Dec  2 22:17:32 2019//
-/util.h/1.18/Sat Aug 17 14:25:06 2019//
+/Makefile/1.5/Mon Oct 19 10:36:43 2020//
+/backupfile.c/1.22/Result of merge+Wed Jul 14 10:55:46 2021//
+/backupfile.h/1.6/Mon Oct 19 10:36:43 2020//
+/common.h/1.30/Mon Oct 19 10:36:43 2020//
+/ed.c/1.4/Mon Oct 19 10:36:43 2020//
+/ed.h/1.1/Mon Oct 19 10:36:43 2020//
+/inp.c/1.49/Mon Oct 19 10:36:43 2020//
+/inp.h/1.8/Mon Oct 19 10:36:43 2020//
+/mkpath.c/1.4/Mon Oct 19 10:36:43 2020//
+/patch.1/1.32/Mon Oct 19 10:36:43 2020//
+/pch.c/1.62/Mon Oct 19 10:36:43 2020//
+/pch.h/1.13/Mon Oct 19 10:36:43 2020//
+/util.c/1.45/Mon Oct 19 10:36:43 2020//
+/util.h/1.18/Mon Oct 19 10:36:43 2020//
 D

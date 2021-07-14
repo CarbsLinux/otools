@@ -1,4 +1,4 @@
-/* $OpenBSD: html.c,v 1.141 2020/04/20 12:59:24 schwarze Exp $ */
+/* $OpenBSD: html.c,v 1.144 2021/05/22 05:49:32 anton Exp $ */
 /*
  * Copyright (c) 2011-2015, 2017-2020 Ingo Schwarze <schwarze@openbsd.org>
  * Copyright (c) 2008-2011, 2014 Kristaps Dzonsons <kristaps@bsd.lv>
@@ -80,7 +80,7 @@ static	const struct htmldata htmltags[TAG_MAX] = {
 	{"h1",		HTML_TOPHRASE | HTML_NLAROUND},
 	{"h2",		HTML_TOPHRASE | HTML_NLAROUND},
 	{"p",		HTML_TOPHRASE | HTML_NLAROUND | HTML_INDENT},
-	{"pre",		HTML_TOPHRASE | HTML_NLALL | HTML_NOINDENT},
+	{"pre",		HTML_TOPHRASE | HTML_NLAROUND | HTML_NOINDENT},
 	{"a",		HTML_INPHRASE | HTML_TOPHRASE},
 	{"b",		HTML_INPHRASE | HTML_TOPHRASE},
 	{"cite",	HTML_INPHRASE | HTML_TOPHRASE},
@@ -139,6 +139,7 @@ html_alloc(const struct manoutput *outopts)
 	h = mandoc_calloc(1, sizeof(struct html));
 
 	h->tag = NULL;
+	h->metac = h->metal = ESCAPE_FONTROMAN;
 	h->style = outopts->style;
 	if ((h->base_man1 = outopts->man) == NULL)
 		h->base_man2 = NULL;
@@ -194,6 +195,8 @@ print_gen_head(struct html *h)
 	struct tag	*t;
 
 	print_otag(h, TAG_META, "?", "charset", "utf-8");
+	print_otag(h, TAG_META, "??", "name", "viewport",
+	    "content", "width=device-width, initial-scale=1.0");
 	if (h->style != NULL) {
 		print_otag(h, TAG_LINK, "?h??", "rel", "stylesheet",
 		    h->style, "type", "text/css", "media", "all");

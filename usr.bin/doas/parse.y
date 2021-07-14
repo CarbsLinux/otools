@@ -1,4 +1,4 @@
-/* $OpenBSD: parse.y,v 1.27 2018/07/11 07:39:22 krw Exp $ */
+/* $OpenBSD: parse.y,v 1.29 2021/01/27 17:02:50 millert Exp $ */
 /*
  * Copyright (c) 2015 Ted Unangst <tedu@openbsd.org>
  *
@@ -48,8 +48,8 @@ typedef struct {
 FILE *yyfp;
 
 struct rule **rules;
-int nrules;
-static int maxrules;
+size_t nrules;
+static size_t maxrules;
 
 int parse_errors = 0;
 
@@ -71,7 +71,7 @@ arraylen(const char **arr)
 %}
 
 %token TPERMIT TDENY TAS TCMD TARGS
-%token TNOPASS TPERSIST TKEEPENV TSETENV
+%token TNOPASS TNOLOG TPERSIST TKEEPENV TSETENV
 %token TSTRING
 
 %%
@@ -96,12 +96,12 @@ rule:		action ident target cmd {
 			r->cmdargs = $4.cmdargs;
 			if (nrules == maxrules) {
 				if (maxrules == 0)
-					maxrules = 63;
-				else
-					maxrules *= 2;
-				if (!(rules = reallocarray(rules, maxrules,
-				    sizeof(*rules))))
+					maxrules = 32;
+				rules = reallocarray(rules, maxrules,
+				    2 * sizeof(*rules));
+				if (!rules)
 					errx(1, "can't allocate rules");
+				maxrules *= 2;
 			}
 			rules[nrules++] = r;
 		} ;
@@ -136,6 +136,9 @@ options:	/* none */ {
 		} ;
 option:		TNOPASS {
 			$$.options = NOPASS;
+			$$.envlist = NULL;
+		} | TNOLOG {
+			$$.options = NOLOG;
 			$$.envlist = NULL;
 		} | TPERSIST {
 			$$.options = PERSIST;
@@ -210,6 +213,7 @@ static struct keyword {
 	{ "cmd", TCMD },
 	{ "args", TARGS },
 	{ "nopass", TNOPASS },
+	{ "nolog", TNOLOG },
 	{ "persist", TPERSIST },
 	{ "keepenv", TKEEPENV },
 	{ "setenv", TSETENV },
@@ -219,7 +223,8 @@ int
 yylex(void)
 {
 	char buf[1024], *ebuf, *p, *str;
-	int i, c, quotes = 0, escape = 0, qpos = -1, nonkw = 0;
+	int c, quotes = 0, escape = 0, qpos = -1, nonkw = 0;
+	size_t i;
 
 	p = buf;
 	ebuf = buf + sizeof(buf);
