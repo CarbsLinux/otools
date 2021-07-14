@@ -11,8 +11,7 @@ YACC    ?= yacc
 
 # You can uncomment the latter if you aren't using libtls-bearssl. If you
 # aren't linking statically, '-ltls' should be suffice.
-TLSLIB = -ltls -lbearssl
-#TLSLIB    = `pkgconf --static --libs libtls`
+TLSLIB    = `pkgconf --static --libs libtls`
 
 # You can replace the following to 'lib/libz/libz.a' in order to build with the
 # in-source zlib.
