@@ -250,6 +250,7 @@ nc: ${NCOBJ} ${LIB}
 
 # ------------------------------------------------------------------------------
 #  pax
+PAXLINK = tar cpio
 PAXOBJ = \
 	 bin/pax/ar_io.o \
 	 bin/pax/ar_subs.o \
@@ -377,6 +378,8 @@ install:
 		cp $${bin} ${DESTDIR}${BINDIR}; \
 		chmod 755 ${DESTDIR}${BINDIR}/$${bin##*/}; done
 	chmod u+s ${DESTDIR}${BINDIR}/doas
+	for bin in ${PAXLINK}; do \
+		ln -s pax ${DESTDIR}${BINDIR}/$${bin}; done
 	for bin in ${MANDOCLINK}; do \
 		ln -s mandoc ${DESTDIR}${BINDIR}/$${bin}; done
 	for bin in ${MD5LINK}; do \
