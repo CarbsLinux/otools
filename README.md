@@ -28,5 +28,5 @@ In order to build `mandoc`, you need to either have zlib installed, or edit
 `config.mk` to use the in-source `zlib`.
 
 In order to build `nc`, you need to have a `libtls` implementation. Carbs Linux
-uses `libtls-bearssl` by default.
+uses `libressl` by default.
 
