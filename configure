@@ -1,8 +1,5 @@
 #!/bin/sh -e
 
-trap 'rm -f config.mk' EXIT
-trap 'rm -f config.mk; exit 1' INT
-
 die() {
     printf '%s: %s\n' "${0##*/}" "$*" >&2
     exit 1
@@ -16,6 +13,7 @@ usage() {
         "  --prefix=dir         Set prefix directory" \
         "  --bindir=dir         Set directory where executables will be installed" \
         "  --manprefix=dir      Set directory where manual pages will be installed" \
+        "  --disable-netcat     Don't build netcat" \
         "  --with-fts=option    One of glibc, musl-fts, none, auto (default: auto)" \
         "  --with-system-zlib   Use system zlib"
     exit 1
@@ -29,6 +27,7 @@ prefix=/usr/local
     manprefix='${PREFIX}/share/man'
 }
 fts=auto
+netcat=1
 host=
 
 for arg; do
@@ -39,21 +38,21 @@ for arg; do
         --manprefix=*) manprefix=${arg#*=} ;;
         --with-fts=*) fts=${arg#*=}  ;;
         --with-system-zlib) zlib=1   ;;
+        --disable-netcat) netcat=0   ;;
         -*) die "Unknown flag: '$arg'" ;;
         *=*) export "$arg";;
         *) die "Unknown option: '$arg'"
     esac
 done
 
+trap 'rm -f config.mk' EXIT
+trap 'rm -f config.mk; exit 1' INT
+
 : ${CC:=cc}
 
 printf 'checking system type... '
 [ "$host" ] || host=$($CC -dumpmachine 2>/dev/null) || die "Could not determine host"
 out "$host"
-
-printf 'checking for libtls... '
-tlslib=$(pkgconf --static --libs libtls) || die "No tls library found"
-out "$tlslib"
 
 case $host in
     *linux*) ;;
@@ -65,14 +64,20 @@ PREFIX    = $prefix
 BINDIR    = $bindir
 MANPREFIX = $manprefix
 
-AR     ?= ${AR:-ar}
-CC     ?= ${CC:-cc}
-RANLIB ?= ${RANLIB:-ranlib}
-RM     ?= rm -f
-YACC   ?= ${YACC:-yacc}
+AR     = ${AR:-ar}
+CC     = ${CC:-cc}
+RANLIB = ${RANLIB:-ranlib}
+RM     = rm -f
+YACC   = ${YACC:-yacc}
 
-TLSLIB = $tlslib
 EOF
+
+[ "$netcat" = 1 ] && {
+    printf 'checking for libtls... '
+    tlslib=$(pkgconf --static --libs libtls) || die "No tls library found"
+    out "$tlslib"
+    out "TLSLIB = $tlslib" "BIN += nc" >>config.mk
+}
 
 printf 'checking for zlib... '
 if [ "$zlib" = 1 ]; then

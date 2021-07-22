@@ -14,7 +14,6 @@ BIN    = \
 	 m4 \
 	 mandoc \
 	 md5 \
-	 nc \
 	 patch \
 	 pax \
 	 signify
