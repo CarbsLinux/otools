@@ -40,7 +40,7 @@ for arg; do
         --with-system-zlib) zlib=1   ;;
         --disable-netcat) netcat=0   ;;
         -*) die "Unknown flag: '$arg'" ;;
-        *=*) export "$arg";;
+        *=*) export "${arg:?}";;
         *) die "Unknown option: '$arg'"
     esac
 done
@@ -48,7 +48,7 @@ done
 trap 'rm -f config.mk' EXIT
 trap 'rm -f config.mk; exit 1' INT
 
-: ${CC:=cc}
+: "${CC:=cc}"
 
 printf 'checking system type... '
 [ "$host" ] || host=$($CC -dumpmachine 2>/dev/null) || die "Could not determine host"
