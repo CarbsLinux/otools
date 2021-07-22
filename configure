@@ -10,6 +10,17 @@ die() {
 
 out() { printf '%s\n' "$@" ;}
 
+usage() {
+    out "usage: $0 [options]" \
+        "Options:" \
+        "  --prefix=dir         Set prefix directory" \
+        "  --bindir=dir         Set directory where executables will be installed" \
+        "  --manprefix=dir      Set directory where manual pages will be installed" \
+        "  --with-fts=option    One of glibc, musl-fts, none, auto (default: auto)" \
+        "  --with-system-zlib   Use system zlib"
+    exit 1
+}
+
 prefix=/usr/local
 # We don't want expansion
 # shellcheck disable=2016
@@ -22,8 +33,10 @@ host=
 
 for arg; do
     case $arg in
+        --help) usage ;;
         --prefix=*) prefix=${arg#*=} ;;
         --bindir=*) bindir=${arg#*=} ;;
+        --manprefix=*) manprefix=${arg#*=} ;;
         --with-fts=*) fts=${arg#*=}  ;;
         --with-system-zlib) zlib=1   ;;
         -*) die "Unknown flag: '$arg'" ;;
