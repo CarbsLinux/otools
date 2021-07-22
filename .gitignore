@@ -12,3 +12,4 @@
 /pax
 /signify
 /lib/libc/hash/*hl.c
+config.mk

@@ -1,4 +1,11 @@
-include config.mk
+CFLAGS  += -Wall -Wno-pointer-sign -Wno-maybe-uninitialized \
+	  -Wno-attributes -I${PWD}/includedir \
+	  -D 'DEF_WEAK(n)=_Static_assert(1, "")' \
+	  -idirafter ${PWD}/include \
+	  -idirafter ${PWD}/sys \
+	  -idirafter ${PWD}/lib/libutil \
+	  -idirafter ${PWD}/lib/libcrypto
+
 BIN    = \
 	 diff \
 	 doas \
@@ -79,6 +86,11 @@ MAN = \
 	bin/pax/tar.1 \
 	usr.bin/signify/signify.1
 
+MANDOCLIBS = ${LIB}
+GREPLIBS   = ${LIB}
+
+include config.mk
+
 .y.c:
 	${YACC} -o $@ $<
 .c.o:
@@ -88,13 +100,6 @@ MAN = \
 
 all: ${BIN}
 ${BINOBJ}: ${LIB}
-
-MANDOCLIBS = ${LIB}
-GREPLIBS   = ${LIB}
-ifeq (${ZLIB}, lib/libz/libz.a)
-  MANDOCLIBS += ${ZLIB}
-  GREPLIBS += ${ZLIB}
-endif
 
 # ------------------------------------------------------------------------------
 # diff
@@ -152,8 +157,8 @@ GREPOBJ = \
 	usr.bin/grep/util.o
 BINOBJ += ${GREPOBJ}
 
-grep: ${GREPOBJ} ${LIB}
-	${CC} ${LDFLAGS} -o $@ ${GREPOBJ} ${LIB} -lz
+grep: ${GREPOBJ} ${GREPLIBS}
+	${CC} ${LDFLAGS} -o $@ ${GREPOBJ} ${LIB} ${ZLIB} ${LIBFTS}
 
 # ------------------------------------------------------------------------------
 # m4

@@ -1,0 +1,102 @@
+#!/bin/sh -e
+
+trap 'rm -f config.mk' EXIT
+trap 'rm -f config.mk; exit 1' INT
+
+die() {
+    printf '%s: %s\n' "${0##*/}" "$*" >&2
+    exit 1
+}
+
+out() { printf '%s\n' "$@" ;}
+
+prefix=/usr/local
+# We don't want expansion
+# shellcheck disable=2016
+{
+    bindir='$(PREFIX)/bin'
+    manprefix='${PREFIX}/share/man'
+}
+fts=auto
+host=
+
+for arg; do
+    case $arg in
+        --prefix=*) prefix=${arg#*=} ;;
+        --bindir=*) bindir=${arg#*=} ;;
+        --with-fts=*) fts=${arg#*=}  ;;
+        --with-system-zlib) zlib=1   ;;
+        -*) die "Unknown flag: '$arg'" ;;
+        *=*) export "$arg";;
+        *) die "Unknown option: '$arg'"
+    esac
+done
+
+: ${CC:=cc}
+
+printf 'checking system type... '
+[ "$host" ] || host=$($CC -dumpmachine 2>/dev/null) || die "Could not determine host"
+out "$host"
+
+printf 'checking for libtls... '
+tlslib=$(pkgconf --static --libs libtls) || die "No tls library found"
+out "$tlslib"
+
+case $host in
+    *linux*) ;;
+    *) die "Unsupported system: $host"
+esac
+
+cat <<EOF >config.mk
+PREFIX    = $prefix
+BINDIR    = $bindir
+MANPREFIX = $manprefix
+
+AR     ?= ${AR:-ar}
+CC     ?= ${CC:-cc}
+RANLIB ?= ${RANLIB:-ranlib}
+RM     ?= rm -f
+YACC   ?= ${YACC:-yacc}
+
+TLSLIB = $tlslib
+EOF
+
+printf 'checking for zlib... '
+if [ "$zlib" = 1 ]; then
+    zlib=$(pkgconf --static --libs zlib)
+    out "$zlib"
+    out "ZLIB = $zlib" >> config.mk
+else
+    zlib=lib/libz/libz.a
+    out "in source"
+    out "ZLIB = $zlib" "MANDOCLIBS += $zlib" "GREPLIBS += $zlib" >>config.mk
+fi
+
+printf 'checking for fts... '
+if [ "$fts" = auto ]; then
+    if out "#include <fts.h>" | $CC -E - >/dev/null 2>&1; then
+        fts=glibc
+        pkgconf --exists musl-fts && fts=musl-fts
+    else
+        fts=none
+    fi
+fi
+
+out "$fts"
+
+case $fts in
+    glibc) out "CFLAGS += -DHAVE_FTS" ;;
+    musl-fts) out "CFLAGS += -DHAVE_FTS" "LIBFTS = -lfts" ;;
+    none) out "LIBOBJ += lib/libc/gen/fts.o"
+esac >>config.mk
+
+printf "Checking if less supports '-T'... "
+if echo | less -T test >/dev/null 2>&1; then
+    out yes
+    out "CFLAGS += -DHAVE_LESS_T" >>config.mk
+else
+    out no
+fi
+
+out "written config.mk" "Run 'make' to compile otools"
+trap - EXIT INT
