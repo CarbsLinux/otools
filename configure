@@ -13,8 +13,10 @@ usage() {
         "  --prefix=dir         Set prefix directory" \
         "  --bindir=dir         Set directory where executables will be installed" \
         "  --manprefix=dir      Set directory where manual pages will be installed" \
-        "  --disable-netcat     Don't build netcat" \
-        "  --with-fts=option    One of glibc, musl-fts, none, auto (default: auto)" \
+        "  --with-netcat=opt    Whether to build netcat [yes,no,auto](default: auto)" \
+        "  --with-less-t=opt    Whether to build mandoc with 'less -T' tagfile support" \
+        "                                                 [yes,no,auto](default: auto)" \
+        "  --with-fts=opt       One of glibc, musl-fts, none, auto (default: auto)" \
         "  --with-system-zlib   Use system zlib"
     exit 1
 }
@@ -27,7 +29,8 @@ prefix=/usr/local
     manprefix='${PREFIX}/share/man'
 }
 fts=auto
-netcat=1
+netcat=auto
+lesst=auto
 host=
 
 for arg; do
@@ -38,7 +41,12 @@ for arg; do
         --manprefix=*) manprefix=${arg#*=} ;;
         --with-fts=*) fts=${arg#*=}  ;;
         --with-system-zlib) zlib=1   ;;
-        --disable-netcat) netcat=0   ;;
+        --with-less-t) lesst=yes     ;;
+        --without-less-t) lesst=no   ;;
+        --with-less-t=*) lesst=${arg#*=} ;;
+        --with-netcat) netcat=yes    ;;
+        --without-netcat) netcat=no  ;;
+        --with-netcat=*) netcat=${arg#*=} ;;
         -*) die "Unknown flag: '$arg'" ;;
         *=*) export "${arg:?}";;
         *) die "Unknown option: '$arg'"
@@ -48,7 +56,7 @@ done
 trap 'rm -f config.mk' EXIT
 trap 'rm -f config.mk; exit 1' INT
 
-: "${CC:=cc}"
+: "${CC:=cc}" "${PKG_CONFIG:=pkg-config}"
 
 printf 'checking system type... '
 [ "$host" ] || host=$($CC -dumpmachine 2>/dev/null) || die "Could not determine host"
@@ -72,16 +80,22 @@ YACC   = ${YACC:-yacc}
 
 EOF
 
-[ "$netcat" = 1 ] && {
-    printf 'checking for libtls... '
-    tlslib=$(pkgconf --static --libs libtls) || die "No tls library found"
-    out "$tlslib"
-    out "TLSLIB = $tlslib" "BIN += nc" >>config.mk
-}
+case $netcat in
+    auto|yes)
+        printf 'checking for libtls... '
+        if tlslib=$("$PKG_CONFIG" --static --libs libtls 2>/dev/null); then
+            out "$tlslib"
+            out "TLSLIB = $tlslib" "BIN += nc" >>config.mk
+            out "MAN += usr.bin/nc/nc.1" >>config.mk
+        else
+            out "none"
+            [ "$netcat" = yes ] && die "No tls library found"
+        fi
+esac
 
 printf 'checking for zlib... '
 if [ "$zlib" = 1 ]; then
-    zlib=$(pkgconf --static --libs zlib)
+    zlib=$($PKG_CONFIG --static --libs zlib)
     out "$zlib"
     out "ZLIB = $zlib" >> config.mk
 else
@@ -94,7 +108,7 @@ printf 'checking for fts... '
 if [ "$fts" = auto ]; then
     if out "#include <fts.h>" | $CC -E - >/dev/null 2>&1; then
         fts=glibc
-        pkgconf --exists musl-fts && fts=musl-fts
+        $PKG_CONFIG --exists musl-fts && fts=musl-fts
     else
         fts=none
     fi
@@ -108,13 +122,17 @@ case $fts in
     none) out "LIBOBJ += lib/libc/gen/fts.o"
 esac >>config.mk
 
-printf "Checking if less supports '-T'... "
-if echo | less -T test >/dev/null 2>&1; then
-    out yes
-    out "CFLAGS += -DHAVE_LESS_T" >>config.mk
-else
-    out no
-fi
+case $lesst in
+    auto|yes)
+        printf "Checking if less supports '-T'... "
+        if echo | less -T test >/dev/null 2>&1; then
+            out yes
+            out "CFLAGS += -DHAVE_LESS_T" >>config.mk
+        else
+            out no
+            [ "$lesst" = yes ] && die "less doesn't support '-T' flag"
+        fi
+esac
 
 out "written config.mk" "Run 'make' to compile otools"
 trap - EXIT INT

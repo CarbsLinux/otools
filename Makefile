@@ -66,7 +66,6 @@ MAN = \
 	usr.bin/mandoc/man.conf.5 \
 	usr.bin/mandoc/mandoc.1 \
 	usr.bin/m4/m4.1 \
-	usr.bin/nc/nc.1 \
 	usr.bin/patch/patch.1 \
 	bin/ed/ed.1 \
 	bin/md5/md5.1 \
