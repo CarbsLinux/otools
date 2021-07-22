@@ -56,15 +56,6 @@ LIBOBJ = \
 	 lib/libutil/ohash.o \
 	 lib/libutil/pidfile.o
 
-ifeq (${FTS}, 0)
-LIBOBJ += lib/libc/gen/fts.o
-else
-CFLAGS += -DHAVE_FTS
-  ifeq (${FTS}, 1)
-  LIBFTS = -lfts
-  endif
-endif
-
 MAN = \
 	usr.bin/diff/diff.1 \
 	usr.bin/doas/doas.1 \
