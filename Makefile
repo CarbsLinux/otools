@@ -1,5 +1,6 @@
 CFLAGS  += -Wall -Wno-pointer-sign -Wno-maybe-uninitialized \
 	  -Wno-attributes -I${PWD}/includedir \
+	  -DEXTENDED \
 	  -D 'DEF_WEAK(n)=_Static_assert(1, "")' \
 	  -idirafter ${PWD}/include \
 	  -idirafter ${PWD}/sys \
