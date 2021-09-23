@@ -11,5 +11,6 @@
 /patch
 /pax
 /signify
+/tsort
 /lib/libc/hash/*hl.c
 config.mk
