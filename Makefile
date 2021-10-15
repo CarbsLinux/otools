@@ -17,8 +17,7 @@ BIN    = \
 	 md5 \
 	 patch \
 	 pax \
-	 signify \
-	 tsort
+	 signify
 
 LIB    = lib/libbsd.a
 LIBOBJ = \
@@ -75,8 +74,7 @@ MAN = \
 	bin/pax/cpio.1 \
 	bin/pax/pax.1 \
 	bin/pax/tar.1 \
-	usr.bin/signify/signify.1 \
-	usr.bin/tsort/tsort.1
+	usr.bin/signify/signify.1
 
 MANDOCLIBS = ${LIB}
 GREPLIBS   = ${LIB}
@@ -314,14 +312,6 @@ SIGNIFYOBJ = \
 BINOBJ += ${SIGNIFYOBJ}
 signify: ${SIGNIFYOBJ} ${LIB}
 	${CC} ${LDFLAGS} -o $@ ${SIGNIFYOBJ} ${LIB}
-
-# ------------------------------------------------------------------------------
-# tsort
-TSORTOBJ = \
-	usr.bin/tsort/tsort.o
-BINOBJ += ${TSORTOBJ}
-tsort: ${TSORTOBJ} ${LIB}
-	${CC} ${LDFLAGS} -o $@ ${TSORTOBJ} ${LIB}
 
 # ------------------------------------------------------------------------------
 #  hash helpers
